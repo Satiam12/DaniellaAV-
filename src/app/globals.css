@@ -253,6 +253,11 @@ html[data-theme="dark"] .statusText {
   padding: 10px 14px;
 }
 
+.nav a.active {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: #fffaf3;
+}
+
 .nav a:hover,
 .themeToggle:hover,
 .adminSidebar button:hover,
@@ -463,6 +468,12 @@ html[data-theme="dark"] .projectCard {
 
 .contentSection {
   padding: 32px;
+}
+
+.focusSection {
+  justify-content: center;
+  min-height: calc(100vh - 170px);
+  scroll-margin-top: 120px;
 }
 
 .aboutCard {
@@ -915,6 +926,10 @@ input[type="color"] {
   .adminCard,
   .adminSidebar {
     padding: 22px;
+  }
+
+  .focusSection {
+    min-height: auto;
   }
 
   .projectCard {

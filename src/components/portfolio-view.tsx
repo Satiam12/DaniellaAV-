@@ -134,9 +134,21 @@ export function PortfolioView({ config }: PortfolioViewProps) {
     const stored = window.localStorage.getItem("portfolio-language");
     return stored === "fr" || stored === "mg" || stored === "en" ? stored : "fr";
   });
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const themeStyles = getThemeStyles(config) as CSSProperties;
   const copy = translations[language];
   const sizes = config.preferences.fontSizes;
+  const sectionLinks = [
+    config.about.enabled ? { id: "about", label: copy.sections.about } : null,
+    config.services.enabled ? { id: "services", label: copy.sections.services } : null,
+    config.cursus.enabled ? { id: "cursus", label: copy.sections.cursus } : null,
+    config.experience.enabled
+      ? { id: "experience", label: copy.sections.experience }
+      : null,
+    config.projects.enabled ? { id: "projects", label: copy.sections.projects } : null,
+    config.contact.enabled ? { id: "contact", label: copy.sections.contact } : null,
+  ].filter(Boolean) as Array<{ id: string; label: string }>;
+  const sectionIdsKey = sectionLinks.map((item) => item.id).join("|");
 
   useEffect(() => {
     const nodes = Array.from(
@@ -172,16 +184,37 @@ export function PortfolioView({ config }: PortfolioViewProps) {
 
     return () => observer.disconnect();
   }, []);
-  const sectionLinks = [
-    config.about.enabled ? { id: "about", label: copy.sections.about } : null,
-    config.services.enabled ? { id: "services", label: copy.sections.services } : null,
-    config.cursus.enabled ? { id: "cursus", label: copy.sections.cursus } : null,
-    config.experience.enabled
-      ? { id: "experience", label: copy.sections.experience }
-      : null,
-    config.projects.enabled ? { id: "projects", label: copy.sections.projects } : null,
-    config.contact.enabled ? { id: "contact", label: copy.sections.contact } : null,
-  ].filter(Boolean) as Array<{ id: string; label: string }>;
+
+  useEffect(() => {
+    const sectionIds = sectionIdsKey ? sectionIdsKey.split("|") : [];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => second.intersectionRatio - first.intersectionRatio);
+
+        if (visibleEntries.length > 0) {
+          setActiveSection((visibleEntries[0].target as HTMLElement).id);
+        }
+      },
+      {
+        threshold: [0.2, 0.4, 0.65],
+        rootMargin: "-20% 0px -45% 0px",
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [sectionIdsKey]);
 
   function changeLanguage(nextLanguage: PortfolioLanguage) {
     setLanguage(nextLanguage);
@@ -204,7 +237,11 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         </a>
         <nav className="nav">
           {sectionLinks.map((link) => (
-            <a href={`#${link.id}`} key={link.id}>
+            <a
+              className={activeSection === link.id ? "active" : undefined}
+              href={`#${link.id}`}
+              key={link.id}
+            >
               {link.label}
             </a>
           ))}
@@ -266,7 +303,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         </section>
 
         {config.about.enabled ? (
-          <section className="contentSection aboutCard revealOnScroll" data-reveal id="about" style={{ fontSize: `${Math.max(12, sizes.about)}px` }}>
+          <section className="contentSection focusSection aboutCard revealOnScroll" data-reveal id="about" style={{ fontSize: `${Math.max(12, sizes.about)}px` }}>
             <p className="sectionTag">{copy.sections.about}</p>
             <div className="splitHeading">
               <h2 style={{ fontSize: `${Math.max(18, sizes.about + 16)}px` }}>{copy.aboutTitle}</h2>
@@ -276,7 +313,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.services.enabled ? (
-          <section className="contentSection revealOnScroll" data-reveal id="services" style={{ fontSize: `${Math.max(12, sizes.services)}px` }}>
+          <section className="contentSection focusSection revealOnScroll" data-reveal id="services" style={{ fontSize: `${Math.max(12, sizes.services)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.services}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.services + 14)}px` }}>{copy.servicesTitle}</h2>
@@ -293,7 +330,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.cursus.enabled ? (
-          <section className="contentSection revealOnScroll" data-reveal id="cursus" style={{ fontSize: `${Math.max(12, sizes.cursus)}px` }}>
+          <section className="contentSection focusSection revealOnScroll" data-reveal id="cursus" style={{ fontSize: `${Math.max(12, sizes.cursus)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.cursus}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.cursus + 14)}px` }}>{config.cursus.heading}</h2>
@@ -316,7 +353,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.experience.enabled ? (
-          <section className="contentSection revealOnScroll" data-reveal id="experience" style={{ fontSize: `${Math.max(12, sizes.experience)}px` }}>
+          <section className="contentSection focusSection revealOnScroll" data-reveal id="experience" style={{ fontSize: `${Math.max(12, sizes.experience)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.experience}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.experience + 14)}px` }}>{config.experience.heading}</h2>
@@ -339,7 +376,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.projects.enabled ? (
-          <section className="contentSection revealOnScroll" data-reveal id="projects" style={{ fontSize: `${Math.max(12, sizes.projects)}px` }}>
+          <section className="contentSection focusSection revealOnScroll" data-reveal id="projects" style={{ fontSize: `${Math.max(12, sizes.projects)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.projects}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.projects + 14)}px` }}>{copy.projectsTitle}</h2>
@@ -361,7 +398,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.contact.enabled ? (
-          <section className="contentSection contactCard revealOnScroll" data-reveal id="contact" style={{ fontSize: `${Math.max(12, sizes.contact)}px` }}>
+          <section className="contentSection focusSection contactCard revealOnScroll" data-reveal id="contact" style={{ fontSize: `${Math.max(12, sizes.contact)}px` }}>
             <div>
               <p className="sectionTag">{copy.sections.contact}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.contact + 14)}px` }}>
