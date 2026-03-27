@@ -1,0 +1,130 @@
+{
+  "site": {
+    "ownerName": "satiam",
+    "navTitle": "satiam portfolio",
+    "location": "Antananarivo, Madagascar"
+  },
+  "theme": {
+    "primary": "#d05f32",
+    "secondary": "#f3b57d",
+    "accent": "#1cc4b1",
+    "background": "#89652f",
+    "surface": "#fff8ef",
+    "text": "#712e14",
+    "muted": "#6b564c",
+    "darkBackground": "#101213",
+    "darkSurface": "#171d1f",
+    "darkText": "#f7efe3",
+    "darkMuted": "#bcab9e"
+  },
+  "preferences": {
+    "defaultMode": "light",
+    "showDarkModeToggle": true
+  },
+  "hero": {
+    "badge": "Portfolio ",
+    "title": "Je transforme mes idees en experiences web nettes, rapides et memorables.",
+    "subtitle": "Designer developpeur freelance",
+    "description": "Portfolio Next.js personnalisable. Chaque section, bouton, photo et couleur peut etre modifiee sans toucher au code.",
+    "showProfileImage": false,
+    "profileImage": "",
+    "primaryButton": {
+      "label": "Demarrer un projet",
+      "href": "#contact",
+      "enabled": false
+    },
+    "secondaryButton": {
+      "label": "Voir mes projets",
+      "href": "#projects",
+      "enabled": true
+    },
+    "heroImage": "",
+    "stats": [
+      {
+        "label": "Projets livres",
+        "value": "18+"
+      },
+      {
+        "label": "Clients accompagnes",
+        "value": "11"
+      },
+      {
+        "label": "Temps de reponse",
+        "value": "24h"
+      }
+    ]
+  },
+  "about": {
+    "enabled": true,
+    "heading": "A propos",
+    "body": "Je construis des sites et interfaces qui donnent confiance des les premieres secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences faciles a administrer."
+  },
+  "services": {
+    "enabled": true,
+    "heading": "Services",
+    "items": [
+      {
+        "title": "Direction visuelle",
+        "description": "Identite, palettes, hierarchie typographique et direction UI coherente."
+      },
+      {
+        "title": "Developpement Next.js",
+        "description": "Interfaces rapides, pages admin, formulaires et deploiement Vercel."
+      },
+      {
+        "title": "Autonomie client",
+        "description": "Outils simples pour changer le contenu, les sections et les visuels sans redeploiement manuel."
+      }
+    ]
+  },
+  "projects": {
+    "enabled": true,
+    "heading": "Projets",
+    "items": [
+      {
+        "name": "Studio Horizon",
+        "summary": "Landing page premium avec storytelling visuel et formulaire de conversion.",
+        "url": "https://example.com",
+        "image": ""
+      },
+      {
+        "name": "Atelier Mono",
+        "summary": "Portfolio minimaliste avec CMS maison et galerie medias modulable.",
+        "url": "https://example.com",
+        "image": ""
+      },
+      {
+        "name": "Pulse Event",
+        "summary": "Site evenementiel avec planning, speakers et edition rapide du contenu.",
+        "url": "https://example.com",
+        "image": ""
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "heading": "Galerie",
+    "images": []
+  },
+  "contact": {
+    "enabled": true,
+    "heading": "Contact",
+    "email": "contact@satiam.dev",
+    "phone": "+261 34 00 000 00",
+    "callToAction": "Parlons de votre prochaine vitrine, refonte ou identite digitale."
+  },
+  "socialLinks": [
+    {
+      "label": "Instagram",
+      "href": "https://instagram.com"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://linkedin.com"
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com"
+    }
+  ]
+}
