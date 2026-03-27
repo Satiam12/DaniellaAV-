@@ -141,6 +141,16 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
     });
   }
 
+  const adminSectionLinks = [
+    { id: "admin-overview", label: "Tableau de bord" },
+    { id: "admin-site", label: "Site" },
+    { id: "admin-font-sizes", label: "Polices" },
+    { id: "admin-hero", label: "Hero" },
+    { id: "admin-sections", label: "Sections" },
+    { id: "admin-content", label: "Contenu" },
+    { id: "admin-colors", label: "Couleurs" },
+  ];
+
   return (
     <div className="adminShell">
       <aside className="adminSidebar">
@@ -160,7 +170,15 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
       </aside>
 
       <section className="adminPanels">
-        <article className="adminHeroCard">
+        <nav className="adminTopbar" role="navigation" aria-label="Navigation admin">
+          {adminSectionLinks.map((item) => (
+            <a href={`#${item.id}`} key={item.id}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <article className="adminHeroCard" id="admin-overview">
           <div>
             <p className="sectionLabel">Tableau de bord</p>
             <h2>Edition legere, sans photos et plus facile a maintenir</h2>
@@ -173,7 +191,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-site">
           <div className="cardHeader">
             <div>
               <p className="sectionLabel">Site</p>
@@ -191,7 +209,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-font-sizes">
           <div className="cardHeader">
             <div>
               <p className="sectionLabel">Polices</p>
@@ -211,7 +229,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-hero">
           <div className="cardHeader">
             <div><p className="sectionLabel">Hero</p><h2>Bloc principal et boutons</h2></div>
           </div>
@@ -240,7 +258,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-sections">
           <div className="cardHeader"><div><p className="sectionLabel">Sections</p><h2>Afficher ou masquer</h2></div></div>
           <div className="toggleGrid">
             {([
@@ -259,7 +277,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-content">
           <div className="cardHeader"><div><p className="sectionLabel">Contenu</p><h2>Textes et listes</h2></div></div>
           <div className="formGrid">
             <label className="fullWidth">A propos<textarea rows={4} value={config.about.body} onChange={(event) => updateConfig((current) => ({ ...current, about: { ...current.about, body: event.target.value } }))} /></label>
@@ -331,7 +349,7 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
 
-        <article className="adminCard">
+        <article className="adminCard" id="admin-colors">
           <div className="cardHeader"><div><p className="sectionLabel">Couleurs</p><h2>Palette claire et sombre</h2></div></div>
           <div className="paletteSuggestionGrid">
             {paletteSuggestions.map((palette) => (

@@ -550,6 +550,37 @@ html[data-theme="dark"] .projectCard {
   gap: 24px;
 }
 
+.adminTopbar {
+  backdrop-filter: blur(18px);
+  background: var(--surface-background);
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  position: sticky;
+  top: 16px;
+  z-index: 30;
+}
+
+.adminTopbar a {
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  color: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.adminTopbar a:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
 .adminHeroCard,
 .adminCard {
   border-radius: 30px;
@@ -808,6 +839,12 @@ input[type="color"] {
   .topbar {
     align-items: start;
     display: grid;
+  }
+
+  .adminTopbar {
+    border-radius: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
   .floatingSaveButton {
