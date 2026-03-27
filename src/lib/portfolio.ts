@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { ensureTursoSchema, getTursoClient, hasTursoConfig } from "@/lib/turso";
 import type { PortfolioConfig } from "@/lib/portfolio-types";
 
 const configPath = path.join(process.cwd(), "data", "portfolio-config.json");
@@ -162,6 +163,37 @@ export async function ensurePortfolioStorage() {
 }
 
 export async function getPortfolioConfig() {
+  if (hasTursoConfig()) {
+    await ensureTursoSchema();
+
+    const client = getTursoClient();
+    const result = await client.execute({
+      sql: "SELECT data FROM portfolio_config WHERE id = ?",
+      args: ["main"],
+    });
+    const row = result.rows[0] as { data?: string } | undefined;
+
+    if (!row?.data) {
+      await client.execute({
+        sql: `
+          INSERT INTO portfolio_config (id, data, updated_at)
+          VALUES (?, ?, CURRENT_TIMESTAMP)
+        `,
+        args: ["main", JSON.stringify(defaultPortfolioConfig)],
+      });
+
+      return defaultPortfolioConfig;
+    }
+
+    try {
+      return mergePortfolioConfig(
+        JSON.parse(row.data) as Partial<PortfolioConfig>,
+      );
+    } catch {
+      return defaultPortfolioConfig;
+    }
+  }
+
   await ensurePortfolioStorage();
 
   try {
@@ -180,9 +212,27 @@ export async function getPortfolioConfig() {
 export async function savePortfolioConfig(config: PortfolioConfig) {
   const normalized = mergePortfolioConfig(config);
 
+  if (hasTursoConfig()) {
+    await ensureTursoSchema();
+
+    const client = getTursoClient();
+    await client.execute({
+      sql: `
+        INSERT INTO portfolio_config (id, data, updated_at)
+        VALUES (?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(id) DO UPDATE SET
+          data = excluded.data,
+          updated_at = CURRENT_TIMESTAMP
+      `,
+      args: ["main", JSON.stringify(normalized)],
+    });
+
+    return normalized;
+  }
+
   if (process.env.VERCEL) {
     throw new Error(
-      "Sur Vercel, cette version simple ne peut pas enregistrer durablement les changements. Il faut un stockage externe ou modifier les fichiers via Git.",
+      "Sur Vercel, ajoute TURSO_DATABASE_URL et TURSO_AUTH_TOKEN pour enregistrer les changements de l'admin.",
     );
   }
 
