@@ -34,9 +34,19 @@ export const defaultPortfolioConfig: PortfolioConfig = {
     defaultMode: "light",
     showDarkModeToggle: true,
     fontPreset: "editorial",
+    fontSizes: {
+      heroTitle: 72,
+      heroBody: 18,
+      about: 18,
+      services: 17,
+      cursus: 17,
+      experience: 17,
+      projects: 17,
+      contact: 18,
+    },
   },
   hero: {
-    badge: "Portfolio personnalisable",
+    badge: "Disponible pour missions freelance",
     title: "Je transforme mes idees en experiences web nettes, rapides et memorables.",
     subtitle: "Designer developpeur freelance",
     description:
@@ -83,6 +93,46 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       },
     ],
   },
+  cursus: {
+    enabled: true,
+    heading: "Cursus",
+    items: [
+      {
+        period: "2020 - 2023",
+        diploma: "Licence en informatique",
+        institution: "Universite d'Antananarivo",
+        details:
+          "Parcours developpement web, architecture logicielle et gestion de projet numerique.",
+      },
+      {
+        period: "2019 - 2020",
+        diploma: "Formation UI/UX",
+        institution: "Programme intensif design digital",
+        details:
+          "Conception d'interfaces, prototypage et systemes visuels orientes experience utilisateur.",
+      },
+    ],
+  },
+  experience: {
+    enabled: true,
+    heading: "Experiences professionnelles",
+    items: [
+      {
+        period: "2024 - Aujourd'hui",
+        role: "Developpeur Next.js freelance",
+        company: "Satiam Studio",
+        details:
+          "Creation de portfolios, vitrines et panneaux d'administration pour independants et TPE.",
+      },
+      {
+        period: "2022 - 2024",
+        role: "Frontend Developer",
+        company: "Agence digitale locale",
+        details:
+          "Realisation d'interfaces React, optimisation responsive et maintenance continue.",
+      },
+    ],
+  },
   projects: {
     enabled: true,
     heading: "Projets",
@@ -125,6 +175,11 @@ export const defaultPortfolioConfig: PortfolioConfig = {
 function mergePortfolioConfig(
   incoming?: Partial<PortfolioConfig>,
 ): PortfolioConfig {
+  const normalizedHeroBadge =
+    incoming?.hero?.badge === "Portfolio personnalisable"
+      ? defaultPortfolioConfig.hero.badge
+      : incoming?.hero?.badge;
+
   return {
     ...defaultPortfolioConfig,
     ...incoming,
@@ -133,10 +188,15 @@ function mergePortfolioConfig(
     preferences: {
       ...defaultPortfolioConfig.preferences,
       ...incoming?.preferences,
+      fontSizes: {
+        ...defaultPortfolioConfig.preferences.fontSizes,
+        ...incoming?.preferences?.fontSizes,
+      },
     },
     hero: {
       ...defaultPortfolioConfig.hero,
       ...incoming?.hero,
+      badge: normalizedHeroBadge ?? defaultPortfolioConfig.hero.badge,
       primaryButton: {
         ...defaultPortfolioConfig.hero.primaryButton,
         ...incoming?.hero?.primaryButton,
@@ -152,6 +212,17 @@ function mergePortfolioConfig(
       ...defaultPortfolioConfig.services,
       ...incoming?.services,
       items: incoming?.services?.items ?? defaultPortfolioConfig.services.items,
+    },
+    cursus: {
+      ...defaultPortfolioConfig.cursus,
+      ...incoming?.cursus,
+      items: incoming?.cursus?.items ?? defaultPortfolioConfig.cursus.items,
+    },
+    experience: {
+      ...defaultPortfolioConfig.experience,
+      ...incoming?.experience,
+      items:
+        incoming?.experience?.items ?? defaultPortfolioConfig.experience.items,
     },
     projects: {
       ...defaultPortfolioConfig.projects,

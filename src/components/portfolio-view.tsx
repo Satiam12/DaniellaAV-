@@ -60,10 +60,15 @@ const translations: Record<
   PortfolioLanguage,
   {
     langLabel: string;
-    sections: { about: string; services: string; projects: string; contact: string };
+    sections: {
+      about: string;
+      services: string;
+      cursus: string;
+      experience: string;
+      projects: string;
+      contact: string;
+    };
     theme: { dark: string; light: string };
-    styleActive: string;
-    styleText: string;
     aboutTitle: string;
     servicesTitle: string;
     projectsTitle: string;
@@ -75,13 +80,12 @@ const translations: Record<
     sections: {
       about: "A propos",
       services: "Services",
+      cursus: "Cursus",
+      experience: "Experiences",
       projects: "Projets",
       contact: "Contact",
     },
     theme: { dark: "Mode sombre", light: "Mode clair" },
-    styleActive: "Style actif",
-    styleText:
-      "Modifie les textes, les couleurs, le mode clair ou sombre et la police directement depuis l'interface privee.",
     aboutTitle: "Une presence digitale qui reste simple a faire evoluer.",
     servicesTitle: "Un portfolio qui suit ton rythme.",
     projectsTitle: "Selection recente",
@@ -92,13 +96,12 @@ const translations: Record<
     sections: {
       about: "Momba ahy",
       services: "Tolotra",
+      cursus: "Fianarana",
+      experience: "Asa natao",
       projects: "Tetikasa",
       contact: "Fifandraisana",
     },
     theme: { dark: "Mody maizina", light: "Mody mazava" },
-    styleActive: "Endrika ampiasaina",
-    styleText:
-      "Ovay ny lahatsoratra, ny loko, ny maody mazava na maizina ary ny polisy avy hatrany amin'ny pejy fitantanana miafina.",
     aboutTitle: "Fisiana an-tserasera mora ovaina hatrany.",
     servicesTitle: "Portfolio afaka manaraka ny filanao.",
     projectsTitle: "Safidy vao haingana",
@@ -109,13 +112,12 @@ const translations: Record<
     sections: {
       about: "About",
       services: "Services",
+      cursus: "Education",
+      experience: "Experience",
       projects: "Projects",
       contact: "Contact",
     },
     theme: { dark: "Dark mode", light: "Light mode" },
-    styleActive: "Active style",
-    styleText:
-      "Edit text, colors, light or dark mode, and typography directly from the private control space.",
     aboutTitle: "A digital presence that stays easy to evolve.",
     servicesTitle: "A portfolio that moves at your pace.",
     projectsTitle: "Recent selection",
@@ -134,9 +136,14 @@ export function PortfolioView({ config }: PortfolioViewProps) {
   });
   const themeStyles = getThemeStyles(config) as CSSProperties;
   const copy = translations[language];
+  const sizes = config.preferences.fontSizes;
   const sectionLinks = [
     config.about.enabled ? { id: "about", label: copy.sections.about } : null,
     config.services.enabled ? { id: "services", label: copy.sections.services } : null,
+    config.cursus.enabled ? { id: "cursus", label: copy.sections.cursus } : null,
+    config.experience.enabled
+      ? { id: "experience", label: copy.sections.experience }
+      : null,
     config.projects.enabled ? { id: "projects", label: copy.sections.projects } : null,
     config.contact.enabled ? { id: "contact", label: copy.sections.contact } : null,
   ].filter(Boolean) as Array<{ id: string; label: string }>;
@@ -190,12 +197,16 @@ export function PortfolioView({ config }: PortfolioViewProps) {
       </header>
 
       <main id="home">
-        <section className="heroPanel heroPanelTextOnly">
+        <section className="heroPanel heroPanelSingle">
           <div className="heroCopy">
             <span className="eyebrow">{config.hero.badge}</span>
-            <p className="subtitle">{config.hero.subtitle}</p>
-            <h1>{config.hero.title}</h1>
-            <p className="lead">{config.hero.description}</p>
+            <p className="subtitle" style={{ fontSize: `${Math.max(12, sizes.heroBody)}px` }}>
+              {config.hero.subtitle}
+            </p>
+            <h1 style={{ fontSize: `${Math.max(24, sizes.heroTitle)}px` }}>{config.hero.title}</h1>
+            <p className="lead" style={{ fontSize: `${Math.max(12, sizes.heroBody)}px` }}>
+              {config.hero.description}
+            </p>
             <div className="heroActions">
               {config.hero.primaryButton.enabled ? (
                 <a className="buttonPrimary" href={config.hero.primaryButton.href}>
@@ -217,33 +228,28 @@ export function PortfolioView({ config }: PortfolioViewProps) {
               ))}
             </div>
           </div>
-          <div className="heroTextBlock">
-            <p className="sectionTag">{copy.styleActive}</p>
-            <h2>{config.preferences.fontPreset}</h2>
-            <p>{copy.styleText}</p>
-          </div>
         </section>
 
         {config.about.enabled ? (
-          <section className="contentSection aboutCard" id="about">
+          <section className="contentSection aboutCard" id="about" style={{ fontSize: `${Math.max(12, sizes.about)}px` }}>
             <p className="sectionTag">{copy.sections.about}</p>
             <div className="splitHeading">
-              <h2>{copy.aboutTitle}</h2>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.about + 16)}px` }}>{copy.aboutTitle}</h2>
               <p>{config.about.body}</p>
             </div>
           </section>
         ) : null}
 
         {config.services.enabled ? (
-          <section className="contentSection" id="services">
+          <section className="contentSection" id="services" style={{ fontSize: `${Math.max(12, sizes.services)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.services}</p>
-              <h2>{copy.servicesTitle}</h2>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.services + 14)}px` }}>{copy.servicesTitle}</h2>
             </div>
             <div className="cardGrid">
               {config.services.items.map((item) => (
                 <article className="infoCard" key={item.title}>
-                  <h3>{item.title}</h3>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.services + 3)}px` }}>{item.title}</h3>
                   <p>{item.description}</p>
                 </article>
               ))}
@@ -251,17 +257,61 @@ export function PortfolioView({ config }: PortfolioViewProps) {
           </section>
         ) : null}
 
+        {config.cursus.enabled ? (
+          <section className="contentSection" id="cursus" style={{ fontSize: `${Math.max(12, sizes.cursus)}px` }}>
+            <div className="sectionHeader">
+              <p className="sectionTag">{copy.sections.cursus}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.cursus + 14)}px` }}>{config.cursus.heading}</h2>
+            </div>
+            <div className="cardGrid">
+              {config.cursus.items.map((item) => (
+                <article
+                  className="infoCard"
+                  key={`${item.period}-${item.diploma}-${item.institution}`}
+                >
+                  <p className="sectionTag">{item.period}</p>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.cursus + 3)}px` }}>{item.diploma}</h3>
+                  <p>{item.institution}</p>
+                  <p>{item.details}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {config.experience.enabled ? (
+          <section className="contentSection" id="experience" style={{ fontSize: `${Math.max(12, sizes.experience)}px` }}>
+            <div className="sectionHeader">
+              <p className="sectionTag">{copy.sections.experience}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.experience + 14)}px` }}>{config.experience.heading}</h2>
+            </div>
+            <div className="cardGrid">
+              {config.experience.items.map((item) => (
+                <article
+                  className="infoCard"
+                  key={`${item.period}-${item.role}-${item.company}`}
+                >
+                  <p className="sectionTag">{item.period}</p>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.experience + 3)}px` }}>{item.role}</h3>
+                  <p>{item.company}</p>
+                  <p>{item.details}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         {config.projects.enabled ? (
-          <section className="contentSection" id="projects">
+          <section className="contentSection" id="projects" style={{ fontSize: `${Math.max(12, sizes.projects)}px` }}>
             <div className="sectionHeader">
               <p className="sectionTag">{copy.sections.projects}</p>
-              <h2>{copy.projectsTitle}</h2>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.projects + 14)}px` }}>{copy.projectsTitle}</h2>
             </div>
             <div className="projectList">
               {config.projects.items.map((project) => (
                 <article className="projectCard projectCardSimple" key={project.name}>
                   <div>
-                    <h3>{project.name}</h3>
+                    <h3 style={{ fontSize: `${Math.max(16, sizes.projects + 3)}px` }}>{project.name}</h3>
                     <p>{project.summary}</p>
                   </div>
                   <a href={project.url} rel="noreferrer" target="_blank">
@@ -274,10 +324,12 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.contact.enabled ? (
-          <section className="contentSection contactCard" id="contact">
+          <section className="contentSection contactCard" id="contact" style={{ fontSize: `${Math.max(12, sizes.contact)}px` }}>
             <div>
               <p className="sectionTag">{copy.sections.contact}</p>
-              <h2>{config.contact.callToAction}</h2>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.contact + 14)}px` }}>
+                {config.contact.callToAction}
+              </h2>
             </div>
             <div className="contactDetails">
               <a href={`mailto:${config.contact.email}`}>{config.contact.email}</a>

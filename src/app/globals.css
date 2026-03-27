@@ -278,6 +278,10 @@ html[data-theme="dark"] .statusText {
   grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
 }
 
+.heroPanelSingle {
+  grid-template-columns: 1fr;
+}
+
 .heroCopy {
   position: relative;
   z-index: 1;
@@ -632,6 +636,26 @@ html[data-theme="dark"] .paletteCard {
   padding: 14px 18px;
 }
 
+.floatingSaveButton {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border: none;
+  border-radius: 999px;
+  bottom: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+  color: #fffaf3;
+  cursor: pointer;
+  min-height: 54px;
+  padding: 14px 20px;
+  position: fixed;
+  right: 20px;
+  z-index: 60;
+}
+
+.floatingSaveButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
 .cardHeader {
   margin-bottom: 18px;
 }
@@ -784,6 +808,13 @@ input[type="color"] {
   .topbar {
     align-items: start;
     display: grid;
+  }
+
+  .floatingSaveButton {
+    bottom: 12px;
+    left: 14px;
+    right: 14px;
+    width: auto;
   }
 
   .brand {

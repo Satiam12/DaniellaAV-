@@ -26,6 +26,25 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
     setConfig((current) => updater(current));
   }
 
+  function updateFontSize(
+    key: keyof PortfolioConfig["preferences"]["fontSizes"],
+    value: string,
+  ) {
+    const parsed = Number.parseInt(value, 10);
+    const safeValue = Number.isFinite(parsed) ? Math.max(8, parsed) : 16;
+
+    updateConfig((current) => ({
+      ...current,
+      preferences: {
+        ...current.preferences,
+        fontSizes: {
+          ...current.preferences.fontSizes,
+          [key]: safeValue,
+        },
+      },
+    }));
+  }
+
   function updateHeroStat(index: number, key: "label" | "value", value: string) {
     updateConfig((current) => ({
       ...current,
@@ -56,6 +75,38 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
       projects: {
         ...current.projects,
         items: current.projects.items.map((item, itemIndex) =>
+          itemIndex === index ? { ...item, [key]: value } : item,
+        ),
+      },
+    }));
+  }
+
+  function updateCursus(
+    index: number,
+    key: "period" | "diploma" | "institution" | "details",
+    value: string,
+  ) {
+    updateConfig((current) => ({
+      ...current,
+      cursus: {
+        ...current.cursus,
+        items: current.cursus.items.map((item, itemIndex) =>
+          itemIndex === index ? { ...item, [key]: value } : item,
+        ),
+      },
+    }));
+  }
+
+  function updateExperience(
+    index: number,
+    key: "period" | "role" | "company" | "details",
+    value: string,
+  ) {
+    updateConfig((current) => ({
+      ...current,
+      experience: {
+        ...current.experience,
+        items: current.experience.items.map((item, itemIndex) =>
           itemIndex === index ? { ...item, [key]: value } : item,
         ),
       },
@@ -142,6 +193,26 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
 
         <article className="adminCard">
           <div className="cardHeader">
+            <div>
+              <p className="sectionLabel">Polices</p>
+              <h2>Taille de texte par section</h2>
+              <p className="cardDescription">Exemple: 12, 16, 20... Tu peux ajuster chaque section independamment.</p>
+            </div>
+          </div>
+          <div className="formGrid">
+            <label>Titre hero (px)<input min={8} type="number" value={config.preferences.fontSizes.heroTitle} onChange={(event) => updateFontSize("heroTitle", event.target.value)} /></label>
+            <label>Texte hero (px)<input min={8} type="number" value={config.preferences.fontSizes.heroBody} onChange={(event) => updateFontSize("heroBody", event.target.value)} /></label>
+            <label>A propos (px)<input min={8} type="number" value={config.preferences.fontSizes.about} onChange={(event) => updateFontSize("about", event.target.value)} /></label>
+            <label>Services (px)<input min={8} type="number" value={config.preferences.fontSizes.services} onChange={(event) => updateFontSize("services", event.target.value)} /></label>
+            <label>Cursus (px)<input min={8} type="number" value={config.preferences.fontSizes.cursus} onChange={(event) => updateFontSize("cursus", event.target.value)} /></label>
+            <label>Experiences (px)<input min={8} type="number" value={config.preferences.fontSizes.experience} onChange={(event) => updateFontSize("experience", event.target.value)} /></label>
+            <label>Projets (px)<input min={8} type="number" value={config.preferences.fontSizes.projects} onChange={(event) => updateFontSize("projects", event.target.value)} /></label>
+            <label>Contact (px)<input min={8} type="number" value={config.preferences.fontSizes.contact} onChange={(event) => updateFontSize("contact", event.target.value)} /></label>
+          </div>
+        </article>
+
+        <article className="adminCard">
+          <div className="cardHeader">
             <div><p className="sectionLabel">Hero</p><h2>Bloc principal et boutons</h2></div>
           </div>
           <div className="formGrid">
@@ -172,7 +243,14 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
         <article className="adminCard">
           <div className="cardHeader"><div><p className="sectionLabel">Sections</p><h2>Afficher ou masquer</h2></div></div>
           <div className="toggleGrid">
-            {([["about", "Section A propos"], ["services", "Section Services"], ["projects", "Section Projets"], ["contact", "Section Contact"]] as const).map(([key, label]) => (
+            {([
+              ["about", "Section A propos"],
+              ["services", "Section Services"],
+              ["cursus", "Section Cursus"],
+              ["experience", "Section Experiences"],
+              ["projects", "Section Projets"],
+              ["contact", "Section Contact"],
+            ] as const).map(([key, label]) => (
               <label className="checkboxRow" key={key}>
                 <input checked={config[key].enabled} onChange={(event) => updateConfig((current) => ({ ...current, [key]: { ...current[key], enabled: event.target.checked } }))} type="checkbox" />
                 {label}
@@ -207,6 +285,34 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
                 </div>
               ))}
               <button className="buttonSecondary" onClick={() => updateConfig((current) => ({ ...current, projects: { ...current.projects, items: [...current.projects.items, { name: "Nouveau projet", summary: "", url: "#" }] } }))} type="button">Ajouter un projet</button>
+            </div>
+            <label className="fullWidth">Cursus</label>
+            <label>Titre section cursus<input value={config.cursus.heading} onChange={(event) => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, heading: event.target.value } }))} /></label>
+            <div className="fullWidth stackList">
+              {config.cursus.items.map((item, index) => (
+                <div className="itemEditor" key={`${item.period}-${item.diploma}-${index}`}>
+                  <input value={item.period} onChange={(event) => updateCursus(index, "period", event.target.value)} placeholder="Periode" />
+                  <input value={item.diploma} onChange={(event) => updateCursus(index, "diploma", event.target.value)} placeholder="Diplome / parcours" />
+                  <input value={item.institution} onChange={(event) => updateCursus(index, "institution", event.target.value)} placeholder="Ecole / institution" />
+                  <textarea rows={3} value={item.details} onChange={(event) => updateCursus(index, "details", event.target.value)} placeholder="Details" />
+                  <button className="buttonDanger" onClick={() => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, items: current.cursus.items.filter((_, itemIndex) => itemIndex !== index) } }))} type="button">Supprimer ce cursus</button>
+                </div>
+              ))}
+              <button className="buttonSecondary" onClick={() => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, items: [...current.cursus.items, { period: "2026", diploma: "Nouveau cursus", institution: "", details: "" }] } }))} type="button">Ajouter un cursus</button>
+            </div>
+            <label className="fullWidth">Experiences professionnelles</label>
+            <label>Titre section experiences<input value={config.experience.heading} onChange={(event) => updateConfig((current) => ({ ...current, experience: { ...current.experience, heading: event.target.value } }))} /></label>
+            <div className="fullWidth stackList">
+              {config.experience.items.map((item, index) => (
+                <div className="itemEditor" key={`${item.period}-${item.role}-${index}`}>
+                  <input value={item.period} onChange={(event) => updateExperience(index, "period", event.target.value)} placeholder="Periode" />
+                  <input value={item.role} onChange={(event) => updateExperience(index, "role", event.target.value)} placeholder="Poste" />
+                  <input value={item.company} onChange={(event) => updateExperience(index, "company", event.target.value)} placeholder="Entreprise" />
+                  <textarea rows={3} value={item.details} onChange={(event) => updateExperience(index, "details", event.target.value)} placeholder="Details" />
+                  <button className="buttonDanger" onClick={() => updateConfig((current) => ({ ...current, experience: { ...current.experience, items: current.experience.items.filter((_, itemIndex) => itemIndex !== index) } }))} type="button">Supprimer cette experience</button>
+                </div>
+              ))}
+              <button className="buttonSecondary" onClick={() => updateConfig((current) => ({ ...current, experience: { ...current.experience, items: [...current.experience.items, { period: "2026", role: "Nouveau poste", company: "", details: "" }] } }))} type="button">Ajouter une experience</button>
             </div>
             <label className="fullWidth">Reseaux</label>
             <div className="fullWidth stackList">
@@ -243,6 +349,9 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           </div>
         </article>
       </section>
+      <button className="floatingSaveButton" disabled={isPending} onClick={saveConfig} type="button">
+        {isPending ? "Enregistrement..." : "Enregistrer"}
+      </button>
     </div>
   );
 }

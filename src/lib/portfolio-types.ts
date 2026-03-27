@@ -24,6 +24,16 @@ export type PortfolioConfig = {
     defaultMode: ThemeMode;
     showDarkModeToggle: boolean;
     fontPreset: FontPreset;
+    fontSizes: {
+      heroTitle: number;
+      heroBody: number;
+      about: number;
+      services: number;
+      cursus: number;
+      experience: number;
+      projects: number;
+      contact: number;
+    };
   };
   hero: {
     badge: string;
@@ -43,6 +53,26 @@ export type PortfolioConfig = {
     enabled: boolean;
     heading: string;
     items: Array<{ title: string; description: string }>;
+  };
+  cursus: {
+    enabled: boolean;
+    heading: string;
+    items: Array<{
+      period: string;
+      diploma: string;
+      institution: string;
+      details: string;
+    }>;
+  };
+  experience: {
+    enabled: boolean;
+    heading: string;
+    items: Array<{
+      period: string;
+      role: string;
+      company: string;
+      details: string;
+    }>;
   };
   projects: {
     enabled: boolean;
