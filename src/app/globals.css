@@ -842,6 +842,14 @@ input[type="color"] {
   }
 }
 
+@media (min-width: 1024px) {
+  .heroPanel,
+  .contentSection {
+    padding-left: clamp(48px, 6vw, 120px);
+    padding-right: clamp(48px, 6vw, 120px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .revealOnScroll,
   .revealOnScroll.is-visible {
