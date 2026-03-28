@@ -278,6 +278,7 @@ html[data-theme="dark"] .statusText {
 .heroPanel,
 .contentSection {
   border-radius: 36px;
+  font-family: var(--active-font-body, var(--font-body)), sans-serif;
   margin: 0 auto 24px;
   max-width: 1240px;
   overflow: hidden;
@@ -288,7 +289,7 @@ html[data-theme="dark"] .statusText {
   display: grid;
   gap: 32px;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  min-height: calc(100vh - 160px);
+  min-height: clamp(520px, 72vh, 820px);
   padding: 42px;
 }
 
@@ -472,7 +473,7 @@ html[data-theme="dark"] .projectCard {
 
 .focusSection {
   justify-content: center;
-  min-height: calc(100vh - 170px);
+  min-height: auto;
   scroll-margin-top: 120px;
 }
 

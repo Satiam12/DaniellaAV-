@@ -6,6 +6,7 @@ import { useState, useTransition } from "react";
 import type {
   FontPreset,
   PortfolioConfig,
+  SectionFontPreset,
   ThemeMode,
 } from "@/lib/portfolio-types";
 
@@ -40,6 +41,24 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
         fontSizes: {
           ...current.preferences.fontSizes,
           [key]: safeValue,
+        },
+      },
+    }));
+  }
+
+  function updateSectionFont(
+    key: keyof PortfolioConfig["preferences"]["sectionFonts"],
+    value: string,
+  ) {
+    const preset = value as SectionFontPreset;
+
+    updateConfig((current) => ({
+      ...current,
+      preferences: {
+        ...current.preferences,
+        sectionFonts: {
+          ...current.preferences.sectionFonts,
+          [key]: preset,
         },
       },
     }));
@@ -206,6 +225,11 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
             <label>Style de police<select value={config.preferences.fontPreset} onChange={(event) => updateConfig((current) => ({ ...current, preferences: { ...current.preferences, fontPreset: event.target.value as FontPreset } }))}><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
             <label>Mode par defaut<select value={config.preferences.defaultMode} onChange={(event) => updateConfig((current) => ({ ...current, preferences: { ...current.preferences, defaultMode: event.target.value as ThemeMode } }))}><option value="light">Clair</option><option value="dark">Sombre</option></select></label>
             <label className="checkboxRow"><input checked={config.preferences.showDarkModeToggle} onChange={(event) => updateConfig((current) => ({ ...current, preferences: { ...current.preferences, showDarkModeToggle: event.target.checked } }))} type="checkbox" />Afficher le bouton mode sombre</label>
+            <label>Texte bouton mode sombre<input value={config.ui.themeToggle.darkLabel} onChange={(event) => updateConfig((current) => ({ ...current, ui: { ...current.ui, themeToggle: { ...current.ui.themeToggle, darkLabel: event.target.value } } }))} /></label>
+            <label>Texte bouton mode clair<input value={config.ui.themeToggle.lightLabel} onChange={(event) => updateConfig((current) => ({ ...current, ui: { ...current.ui, themeToggle: { ...current.ui.themeToggle, lightLabel: event.target.value } } }))} /></label>
+            <label>Label langue FR<input value={config.ui.languageLabels.fr} onChange={(event) => updateConfig((current) => ({ ...current, ui: { ...current.ui, languageLabels: { ...current.ui.languageLabels, fr: event.target.value } } }))} /></label>
+            <label>Label langue MG<input value={config.ui.languageLabels.mg} onChange={(event) => updateConfig((current) => ({ ...current, ui: { ...current.ui, languageLabels: { ...current.ui.languageLabels, mg: event.target.value } } }))} /></label>
+            <label>Label langue EN<input value={config.ui.languageLabels.en} onChange={(event) => updateConfig((current) => ({ ...current, ui: { ...current.ui, languageLabels: { ...current.ui.languageLabels, en: event.target.value } } }))} /></label>
           </div>
         </article>
 
@@ -213,8 +237,8 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
           <div className="cardHeader">
             <div>
               <p className="sectionLabel">Polices</p>
-              <h2>Taille de texte par section</h2>
-              <p className="cardDescription">Exemple: 12, 16, 20... Tu peux ajuster chaque section independamment.</p>
+              <h2>Typographie par section</h2>
+              <p className="cardDescription">Choisis les tailles et la famille de police pour chaque bloc du portfolio.</p>
             </div>
           </div>
           <div className="formGrid">
@@ -226,6 +250,16 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
             <label>Experiences (px)<input min={8} type="number" value={config.preferences.fontSizes.experience} onChange={(event) => updateFontSize("experience", event.target.value)} /></label>
             <label>Projets (px)<input min={8} type="number" value={config.preferences.fontSizes.projects} onChange={(event) => updateFontSize("projects", event.target.value)} /></label>
             <label>Contact (px)<input min={8} type="number" value={config.preferences.fontSizes.contact} onChange={(event) => updateFontSize("contact", event.target.value)} /></label>
+          </div>
+          <div className="formGrid">
+            <label className="fullWidth">Police par section</label>
+            <label>Hero<select value={config.preferences.sectionFonts.hero} onChange={(event) => updateSectionFont("hero", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>A propos<select value={config.preferences.sectionFonts.about} onChange={(event) => updateSectionFont("about", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>Services<select value={config.preferences.sectionFonts.services} onChange={(event) => updateSectionFont("services", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>Cursus<select value={config.preferences.sectionFonts.cursus} onChange={(event) => updateSectionFont("cursus", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>Experiences<select value={config.preferences.sectionFonts.experience} onChange={(event) => updateSectionFont("experience", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>Projets<select value={config.preferences.sectionFonts.projects} onChange={(event) => updateSectionFont("projects", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
+            <label>Contact<select value={config.preferences.sectionFonts.contact} onChange={(event) => updateSectionFont("contact", event.target.value)}><option value="inherit">Global</option><option value="editorial">Editorial</option><option value="modern">Modern</option><option value="classic">Classic</option></select></label>
           </div>
         </article>
 
@@ -280,6 +314,19 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
         <article className="adminCard" id="admin-content">
           <div className="cardHeader"><div><p className="sectionLabel">Contenu</p><h2>Textes et listes</h2></div></div>
           <div className="formGrid">
+            <label className="fullWidth">Libelles & titres de section</label>
+            <label>Label A propos<input value={config.about.heading} onChange={(event) => updateConfig((current) => ({ ...current, about: { ...current.about, heading: event.target.value } }))} /></label>
+            <label>Titre A propos<input value={config.about.title} onChange={(event) => updateConfig((current) => ({ ...current, about: { ...current.about, title: event.target.value } }))} /></label>
+            <label>Label Services<input value={config.services.heading} onChange={(event) => updateConfig((current) => ({ ...current, services: { ...current.services, heading: event.target.value } }))} /></label>
+            <label>Titre Services<input value={config.services.title} onChange={(event) => updateConfig((current) => ({ ...current, services: { ...current.services, title: event.target.value } }))} /></label>
+            <label>Label Cursus<input value={config.cursus.label} onChange={(event) => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, label: event.target.value } }))} /></label>
+            <label>Titre Cursus<input value={config.cursus.heading} onChange={(event) => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, heading: event.target.value } }))} /></label>
+            <label>Label Experiences<input value={config.experience.label} onChange={(event) => updateConfig((current) => ({ ...current, experience: { ...current.experience, label: event.target.value } }))} /></label>
+            <label>Titre Experiences<input value={config.experience.heading} onChange={(event) => updateConfig((current) => ({ ...current, experience: { ...current.experience, heading: event.target.value } }))} /></label>
+            <label>Label Projets<input value={config.projects.heading} onChange={(event) => updateConfig((current) => ({ ...current, projects: { ...current.projects, heading: event.target.value } }))} /></label>
+            <label>Titre Projets<input value={config.projects.title} onChange={(event) => updateConfig((current) => ({ ...current, projects: { ...current.projects, title: event.target.value } }))} /></label>
+            <label>Texte bouton projet<input value={config.projects.openLabel} onChange={(event) => updateConfig((current) => ({ ...current, projects: { ...current.projects, openLabel: event.target.value } }))} /></label>
+            <label>Label Contact<input value={config.contact.heading} onChange={(event) => updateConfig((current) => ({ ...current, contact: { ...current.contact, heading: event.target.value } }))} /></label>
             <label className="fullWidth">A propos<textarea rows={4} value={config.about.body} onChange={(event) => updateConfig((current) => ({ ...current, about: { ...current.about, body: event.target.value } }))} /></label>
             <label className="fullWidth">Services</label>
             <div className="fullWidth stackList">
@@ -305,7 +352,6 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
               <button className="buttonSecondary" onClick={() => updateConfig((current) => ({ ...current, projects: { ...current.projects, items: [...current.projects.items, { name: "Nouveau projet", summary: "", url: "#" }] } }))} type="button">Ajouter un projet</button>
             </div>
             <label className="fullWidth">Cursus</label>
-            <label>Titre section cursus<input value={config.cursus.heading} onChange={(event) => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, heading: event.target.value } }))} /></label>
             <div className="fullWidth stackList">
               {config.cursus.items.map((item, index) => (
                 <div className="itemEditor" key={`${item.period}-${item.diploma}-${index}`}>
@@ -319,7 +365,6 @@ export function AdminEditor({ initialConfig }: AdminEditorProps) {
               <button className="buttonSecondary" onClick={() => updateConfig((current) => ({ ...current, cursus: { ...current.cursus, items: [...current.cursus.items, { period: "2026", diploma: "Nouveau cursus", institution: "", details: "" }] } }))} type="button">Ajouter un cursus</button>
             </div>
             <label className="fullWidth">Experiences professionnelles</label>
-            <label>Titre section experiences<input value={config.experience.heading} onChange={(event) => updateConfig((current) => ({ ...current, experience: { ...current.experience, heading: event.target.value } }))} /></label>
             <div className="fullWidth stackList">
               {config.experience.items.map((item, index) => (
                 <div className="itemEditor" key={`${item.period}-${item.role}-${index}`}>

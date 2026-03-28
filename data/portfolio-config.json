@@ -30,6 +30,15 @@
       "experience": 17,
       "projects": 17,
       "contact": 18
+    },
+    "sectionFonts": {
+      "experience": "inherit",
+      "hero": "inherit",
+      "services": "inherit",
+      "cursus": "inherit",
+      "contact": "inherit",
+      "about": "inherit",
+      "projects": "inherit"
     }
   },
   "hero": {
@@ -65,7 +74,8 @@
   "about": {
     "enabled": true,
     "heading": "A propos",
-    "body": "Je construis des sites et interfaces qui donnent confiance des les premieres secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences simples a faire evoluer."
+    "body": "Je construis des sites et interfaces qui inspirent confiance en quelques secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences simples a faire evoluer.",
+    "title": "Une presence digitale qui reste simple a faire evoluer."
   },
   "services": {
     "enabled": true,
@@ -81,9 +91,10 @@
       },
       {
         "title": "Autonomie client",
-        "description": "Outils simples pour changer le contenu, les sections sans toucher au code."
+        "description": "Outils simples pour changer le contenu, les sections et les visuels sans redeploiement manuel."
       }
-    ]
+    ],
+    "title": "Un portfolio qui suit ton rythme."
   },
   "cursus": {
     "enabled": true,
@@ -98,10 +109,11 @@
       {
         "period": "2019 - 2020",
         "diploma": "Formation UI/UX",
-        "institution": "Programme intensif design digital",
+        "institution": "Programme intensif de design digital",
         "details": "Conception d'interfaces, prototypage et systemes visuels orientes experience utilisateur."
       }
-    ]
+    ],
+    "label": "Cursus"
   },
   "experience": {
     "enabled": true,
@@ -115,11 +127,12 @@
       },
       {
         "period": "2022 - 2024",
-        "role": "Frontend Developer",
+        "role": "Developpeur frontend",
         "company": "Agence digitale locale",
         "details": "Realisation d'interfaces React, optimisation responsive et maintenance continue."
       }
-    ]
+    ],
+    "label": "Experiences"
   },
   "projects": {
     "enabled": true,
@@ -127,7 +140,7 @@
     "items": [
       {
         "name": "Studio Horizon",
-        "summary": "Landing page premium avec storytelling visuel et formulaire de conversion.",
+        "summary": "Page vitrine premium avec storytelling visuel et formulaire de conversion.",
         "url": "https://example.com"
       },
       {
@@ -137,10 +150,12 @@
       },
       {
         "name": "Pulse Event",
-        "summary": "Site evenementiel avec planning, speakers et edition rapide du contenu.",
+        "summary": "Site evenementiel avec planning, intervenants et edition rapide du contenu.",
         "url": "https://example.com"
       }
-    ]
+    ],
+    "title": "Selection recente",
+    "openLabel": "Ouvrir"
   },
   "contact": {
     "enabled": true,
@@ -166,5 +181,16 @@
       "label": "GitHub",
       "href": "https://github.com"
     }
-  ]
+  ],
+  "ui": {
+    "languageLabels": {
+      "mg": "MG",
+      "en": "EN",
+      "fr": "FR"
+    },
+    "themeToggle": {
+      "lightLabel": "Mode clair",
+      "darkLabel": "Mode sombre"
+    }
+  }
 }

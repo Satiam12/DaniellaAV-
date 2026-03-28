@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { getThemeStyles } from "@/lib/portfolio-theme";
@@ -11,6 +11,155 @@ import { ThemeToggle } from "./theme-toggle";
 type PortfolioViewProps = {
   config: PortfolioConfig;
 };
+
+type PortfolioLanguage = "fr" | "mg" | "en";
+
+const translateCacheKey = (language: PortfolioLanguage) =>
+  `portfolio-auto-translate-${language}`;
+
+function shouldTranslate(text: string) {
+  const trimmed = text.trim();
+  if (!trimmed) {
+    return false;
+  }
+  if (/^https?:\/\//i.test(trimmed)) {
+    return false;
+  }
+  if (/^\S+@\S+\.\S+$/i.test(trimmed)) {
+    return false;
+  }
+  if (/^[\d\s+().-]+$/.test(trimmed)) {
+    return false;
+  }
+  if (/^[A-Z]{2,3}$/.test(trimmed)) {
+    return false;
+  }
+  return true;
+}
+
+function useAutoTranslate(language: PortfolioLanguage) {
+  const [cache, setCache] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
+  const pendingRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (language === "fr") {
+      setCache({});
+      return;
+    }
+
+    const stored = window.localStorage.getItem(translateCacheKey(language));
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as Record<string, string>;
+        setCache(parsed ?? {});
+      } catch {
+        setCache({});
+      }
+    } else {
+      setCache({});
+    }
+  }, [language]);
+
+  const t = useCallback(
+    (text: string) => {
+      if (language === "fr") {
+        return text;
+      }
+      if (!shouldTranslate(text)) {
+        return text;
+      }
+      const cached = cache[text];
+      if (cached) {
+        return cached;
+      }
+      pendingRef.current.add(text);
+      return text;
+    },
+    [cache, language],
+  );
+
+  useEffect(() => {
+    if (language === "fr") {
+      return;
+    }
+    if (isTranslating) {
+      return;
+    }
+    if (pendingRef.current.size === 0) {
+      return;
+    }
+
+    const texts = Array.from(pendingRef.current);
+    pendingRef.current.clear();
+    let isActive = true;
+    setIsTranslating(true);
+
+    (async () => {
+      try {
+        const response = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ target: language, texts }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur de traduction");
+        }
+
+        const data = (await response.json()) as { translations?: string[] };
+        const translations = Array.isArray(data.translations)
+          ? data.translations
+          : [];
+
+        if (!isActive) {
+          return;
+        }
+
+        setCache((current) => {
+          const next = { ...current };
+          texts.forEach((text, index) => {
+            const translated = translations[index];
+            next[text] =
+              typeof translated === "string" && translated.trim().length > 0
+                ? translated
+                : text;
+          });
+          window.localStorage.setItem(
+            translateCacheKey(language),
+            JSON.stringify(next),
+          );
+          return next;
+        });
+      } catch {
+        if (!isActive) {
+          return;
+        }
+        setCache((current) => {
+          const next = { ...current };
+          texts.forEach((text) => {
+            next[text] = text;
+          });
+          window.localStorage.setItem(
+            translateCacheKey(language),
+            JSON.stringify(next),
+          );
+          return next;
+        });
+      } finally {
+        if (isActive) {
+          setIsTranslating(false);
+        }
+      }
+    })();
+
+    return () => {
+      isActive = false;
+    };
+  });
+
+  return t;
+}
 
 function SocialIcon({ label }: { label: string }) {
   const lower = label.toLowerCase();
@@ -54,77 +203,6 @@ function SocialIcon({ label }: { label: string }) {
   );
 }
 
-type PortfolioLanguage = "fr" | "mg" | "en";
-
-const translations: Record<
-  PortfolioLanguage,
-  {
-    langLabel: string;
-    sections: {
-      about: string;
-      services: string;
-      cursus: string;
-      experience: string;
-      projects: string;
-      contact: string;
-    };
-    theme: { dark: string; light: string };
-    aboutTitle: string;
-    servicesTitle: string;
-    projectsTitle: string;
-    openProject: string;
-  }
-> = {
-  fr: {
-    langLabel: "FR",
-    sections: {
-      about: "A propos",
-      services: "Services",
-      cursus: "Cursus",
-      experience: "Experiences",
-      projects: "Projets",
-      contact: "Contact",
-    },
-    theme: { dark: "Mode sombre", light: "Mode clair" },
-    aboutTitle: "Une presence digitale qui reste simple a faire evoluer.",
-    servicesTitle: "Un portfolio qui suit ton rythme.",
-    projectsTitle: "Selection recente",
-    openProject: "Ouvrir",
-  },
-  mg: {
-    langLabel: "MG",
-    sections: {
-      about: "Momba ahy",
-      services: "Tolotra",
-      cursus: "Fianarana",
-      experience: "Asa natao",
-      projects: "Tetikasa",
-      contact: "Fifandraisana",
-    },
-    theme: { dark: "Mody maizina", light: "Mody mazava" },
-    aboutTitle: "Fisiana an-tserasera mora ovaina hatrany.",
-    servicesTitle: "Portfolio afaka manaraka ny filanao.",
-    projectsTitle: "Safidy vao haingana",
-    openProject: "Sokafy",
-  },
-  en: {
-    langLabel: "EN",
-    sections: {
-      about: "About",
-      services: "Services",
-      cursus: "Education",
-      experience: "Experience",
-      projects: "Projects",
-      contact: "Contact",
-    },
-    theme: { dark: "Dark mode", light: "Light mode" },
-    aboutTitle: "A digital presence that stays easy to evolve.",
-    servicesTitle: "A portfolio that moves at your pace.",
-    projectsTitle: "Recent selection",
-    openProject: "Open",
-  },
-};
-
 export function PortfolioView({ config }: PortfolioViewProps) {
   const [language, setLanguage] = useState<PortfolioLanguage>(() => {
     if (typeof window === "undefined") {
@@ -136,19 +214,34 @@ export function PortfolioView({ config }: PortfolioViewProps) {
   });
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const themeStyles = getThemeStyles(config) as CSSProperties;
-  const copy = translations[language];
+  const t = useAutoTranslate(language);
   const sizes = config.preferences.fontSizes;
+  const sectionFonts = config.preferences.sectionFonts;
   const sectionLinks = [
-    config.about.enabled ? { id: "about", label: copy.sections.about } : null,
-    config.services.enabled ? { id: "services", label: copy.sections.services } : null,
-    config.cursus.enabled ? { id: "cursus", label: copy.sections.cursus } : null,
-    config.experience.enabled
-      ? { id: "experience", label: copy.sections.experience }
+    config.about.enabled
+      ? { id: "about", label: t(config.about.heading) }
       : null,
-    config.projects.enabled ? { id: "projects", label: copy.sections.projects } : null,
-    config.contact.enabled ? { id: "contact", label: copy.sections.contact } : null,
+    config.services.enabled
+      ? { id: "services", label: t(config.services.heading) }
+      : null,
+    config.cursus.enabled
+      ? { id: "cursus", label: t(config.cursus.label) }
+      : null,
+    config.experience.enabled
+      ? { id: "experience", label: t(config.experience.label) }
+      : null,
+    config.projects.enabled
+      ? { id: "projects", label: t(config.projects.heading) }
+      : null,
+    config.contact.enabled
+      ? { id: "contact", label: t(config.contact.heading) }
+      : null,
   ].filter(Boolean) as Array<{ id: string; label: string }>;
   const sectionIdsKey = sectionLinks.map((item) => item.id).join("|");
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   useEffect(() => {
     const nodes = Array.from(
@@ -231,8 +324,8 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         <a className="brand" href="#home">
           <span className="brandMark">{config.site.ownerName.slice(0, 2)}</span>
           <span>
-            <strong>{config.site.navTitle}</strong>
-            <small>{config.site.location}</small>
+            <strong>{t(config.site.navTitle)}</strong>
+            <small>{t(config.site.location)}</small>
           </span>
         </a>
         <nav className="nav">
@@ -255,39 +348,47 @@ export function PortfolioView({ config }: PortfolioViewProps) {
                 onClick={() => changeLanguage(lang)}
                 type="button"
               >
-                {translations[lang].langLabel}
+                {config.ui.languageLabels[lang]}
               </button>
             ))}
           </div>
           <ThemeToggle
             defaultMode={config.preferences.defaultMode}
-            darkLabel={copy.theme.dark}
+            darkLabel={t(config.ui.themeToggle.darkLabel)}
             enabled={config.preferences.showDarkModeToggle}
-            lightLabel={copy.theme.light}
+            lightLabel={t(config.ui.themeToggle.lightLabel)}
           />
         </div>
       </header>
 
       <main id="home">
-        <section className="heroPanel heroPanelSingle revealOnScroll" data-reveal>
+        <section
+          className="heroPanel heroPanelSingle revealOnScroll"
+          data-font-preset={
+            sectionFonts.hero === "inherit" ? undefined : sectionFonts.hero
+          }
+          data-reveal
+        >
           <div className="heroCopy">
-            <span className="eyebrow">{config.hero.badge}</span>
+            <span className="eyebrow">{t(config.hero.badge)}</span>
             <p className="subtitle" style={{ fontSize: `${Math.max(12, sizes.heroBody)}px` }}>
-              {config.hero.subtitle}
+              {t(config.hero.subtitle)}
             </p>
-            <h1 style={{ fontSize: `${Math.max(24, sizes.heroTitle)}px` }}>{config.hero.title}</h1>
+            <h1 style={{ fontSize: `${Math.max(24, sizes.heroTitle)}px` }}>
+              {t(config.hero.title)}
+            </h1>
             <p className="lead" style={{ fontSize: `${Math.max(12, sizes.heroBody)}px` }}>
-              {config.hero.description}
+              {t(config.hero.description)}
             </p>
             <div className="heroActions">
               {config.hero.primaryButton.enabled ? (
                 <a className="buttonPrimary" href={config.hero.primaryButton.href}>
-                  {config.hero.primaryButton.label}
+                  {t(config.hero.primaryButton.label)}
                 </a>
               ) : null}
               {config.hero.secondaryButton.enabled ? (
                 <a className="buttonGhost" href={config.hero.secondaryButton.href}>
-                  {config.hero.secondaryButton.label}
+                  {t(config.hero.secondaryButton.label)}
                 </a>
               ) : null}
             </div>
@@ -295,7 +396,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
               {config.hero.stats.map((stat) => (
                 <article className="statCard" key={stat.label}>
                   <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
+                  <span>{t(stat.label)}</span>
                 </article>
               ))}
             </div>
@@ -303,26 +404,50 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         </section>
 
         {config.about.enabled ? (
-          <section className="contentSection focusSection aboutCard revealOnScroll" data-reveal id="about" style={{ fontSize: `${Math.max(12, sizes.about)}px` }}>
-            <p className="sectionTag">{copy.sections.about}</p>
+          <section
+            className="contentSection focusSection aboutCard revealOnScroll"
+            data-font-preset={
+              sectionFonts.about === "inherit" ? undefined : sectionFonts.about
+            }
+            data-reveal
+            id="about"
+            style={{ fontSize: `${Math.max(12, sizes.about)}px` }}
+          >
+            <p className="sectionTag">{t(config.about.heading)}</p>
             <div className="splitHeading">
-              <h2 style={{ fontSize: `${Math.max(18, sizes.about + 16)}px` }}>{copy.aboutTitle}</h2>
-              <p>{config.about.body}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.about + 16)}px` }}>
+                {t(config.about.title)}
+              </h2>
+              <p>{t(config.about.body)}</p>
             </div>
           </section>
         ) : null}
 
         {config.services.enabled ? (
-          <section className="contentSection focusSection revealOnScroll" data-reveal id="services" style={{ fontSize: `${Math.max(12, sizes.services)}px` }}>
+          <section
+            className="contentSection focusSection revealOnScroll"
+            data-font-preset={
+              sectionFonts.services === "inherit"
+                ? undefined
+                : sectionFonts.services
+            }
+            data-reveal
+            id="services"
+            style={{ fontSize: `${Math.max(12, sizes.services)}px` }}
+          >
             <div className="sectionHeader">
-              <p className="sectionTag">{copy.sections.services}</p>
-              <h2 style={{ fontSize: `${Math.max(18, sizes.services + 14)}px` }}>{copy.servicesTitle}</h2>
+              <p className="sectionTag">{t(config.services.heading)}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.services + 14)}px` }}>
+                {t(config.services.title)}
+              </h2>
             </div>
             <div className="cardGrid">
               {config.services.items.map((item) => (
                 <article className="infoCard revealOnScroll" data-reveal key={item.title}>
-                  <h3 style={{ fontSize: `${Math.max(16, sizes.services + 3)}px` }}>{item.title}</h3>
-                  <p>{item.description}</p>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.services + 3)}px` }}>
+                    {t(item.title)}
+                  </h3>
+                  <p>{t(item.description)}</p>
                 </article>
               ))}
             </div>
@@ -330,10 +455,20 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.cursus.enabled ? (
-          <section className="contentSection focusSection revealOnScroll" data-reveal id="cursus" style={{ fontSize: `${Math.max(12, sizes.cursus)}px` }}>
+          <section
+            className="contentSection focusSection revealOnScroll"
+            data-font-preset={
+              sectionFonts.cursus === "inherit" ? undefined : sectionFonts.cursus
+            }
+            data-reveal
+            id="cursus"
+            style={{ fontSize: `${Math.max(12, sizes.cursus)}px` }}
+          >
             <div className="sectionHeader">
-              <p className="sectionTag">{copy.sections.cursus}</p>
-              <h2 style={{ fontSize: `${Math.max(18, sizes.cursus + 14)}px` }}>{config.cursus.heading}</h2>
+              <p className="sectionTag">{t(config.cursus.label)}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.cursus + 14)}px` }}>
+                {t(config.cursus.heading)}
+              </h2>
             </div>
             <div className="cardGrid">
               {config.cursus.items.map((item) => (
@@ -342,10 +477,12 @@ export function PortfolioView({ config }: PortfolioViewProps) {
                   data-reveal
                   key={`${item.period}-${item.diploma}-${item.institution}`}
                 >
-                  <p className="sectionTag">{item.period}</p>
-                  <h3 style={{ fontSize: `${Math.max(16, sizes.cursus + 3)}px` }}>{item.diploma}</h3>
-                  <p>{item.institution}</p>
-                  <p>{item.details}</p>
+                  <p className="sectionTag">{t(item.period)}</p>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.cursus + 3)}px` }}>
+                    {t(item.diploma)}
+                  </h3>
+                  <p>{t(item.institution)}</p>
+                  <p>{t(item.details)}</p>
                 </article>
               ))}
             </div>
@@ -353,10 +490,22 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.experience.enabled ? (
-          <section className="contentSection focusSection revealOnScroll" data-reveal id="experience" style={{ fontSize: `${Math.max(12, sizes.experience)}px` }}>
+          <section
+            className="contentSection focusSection revealOnScroll"
+            data-font-preset={
+              sectionFonts.experience === "inherit"
+                ? undefined
+                : sectionFonts.experience
+            }
+            data-reveal
+            id="experience"
+            style={{ fontSize: `${Math.max(12, sizes.experience)}px` }}
+          >
             <div className="sectionHeader">
-              <p className="sectionTag">{copy.sections.experience}</p>
-              <h2 style={{ fontSize: `${Math.max(18, sizes.experience + 14)}px` }}>{config.experience.heading}</h2>
+              <p className="sectionTag">{t(config.experience.label)}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.experience + 14)}px` }}>
+                {t(config.experience.heading)}
+              </h2>
             </div>
             <div className="cardGrid">
               {config.experience.items.map((item) => (
@@ -365,10 +514,12 @@ export function PortfolioView({ config }: PortfolioViewProps) {
                   data-reveal
                   key={`${item.period}-${item.role}-${item.company}`}
                 >
-                  <p className="sectionTag">{item.period}</p>
-                  <h3 style={{ fontSize: `${Math.max(16, sizes.experience + 3)}px` }}>{item.role}</h3>
-                  <p>{item.company}</p>
-                  <p>{item.details}</p>
+                  <p className="sectionTag">{t(item.period)}</p>
+                  <h3 style={{ fontSize: `${Math.max(16, sizes.experience + 3)}px` }}>
+                    {t(item.role)}
+                  </h3>
+                  <p>{t(item.company)}</p>
+                  <p>{t(item.details)}</p>
                 </article>
               ))}
             </div>
@@ -376,20 +527,34 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.projects.enabled ? (
-          <section className="contentSection focusSection revealOnScroll" data-reveal id="projects" style={{ fontSize: `${Math.max(12, sizes.projects)}px` }}>
+          <section
+            className="contentSection focusSection revealOnScroll"
+            data-font-preset={
+              sectionFonts.projects === "inherit"
+                ? undefined
+                : sectionFonts.projects
+            }
+            data-reveal
+            id="projects"
+            style={{ fontSize: `${Math.max(12, sizes.projects)}px` }}
+          >
             <div className="sectionHeader">
-              <p className="sectionTag">{copy.sections.projects}</p>
-              <h2 style={{ fontSize: `${Math.max(18, sizes.projects + 14)}px` }}>{copy.projectsTitle}</h2>
+              <p className="sectionTag">{t(config.projects.heading)}</p>
+              <h2 style={{ fontSize: `${Math.max(18, sizes.projects + 14)}px` }}>
+                {t(config.projects.title)}
+              </h2>
             </div>
             <div className="projectList">
               {config.projects.items.map((project) => (
                 <article className="projectCard projectCardSimple revealOnScroll" data-reveal key={project.name}>
                   <div>
-                    <h3 style={{ fontSize: `${Math.max(16, sizes.projects + 3)}px` }}>{project.name}</h3>
-                    <p>{project.summary}</p>
+                    <h3 style={{ fontSize: `${Math.max(16, sizes.projects + 3)}px` }}>
+                      {t(project.name)}
+                    </h3>
+                    <p>{t(project.summary)}</p>
                   </div>
                   <a href={project.url} rel="noreferrer" target="_blank">
-                    {copy.openProject}
+                    {t(config.projects.openLabel)}
                   </a>
                 </article>
               ))}
@@ -398,11 +563,19 @@ export function PortfolioView({ config }: PortfolioViewProps) {
         ) : null}
 
         {config.contact.enabled ? (
-          <section className="contentSection focusSection contactCard revealOnScroll" data-reveal id="contact" style={{ fontSize: `${Math.max(12, sizes.contact)}px` }}>
+          <section
+            className="contentSection focusSection contactCard revealOnScroll"
+            data-font-preset={
+              sectionFonts.contact === "inherit" ? undefined : sectionFonts.contact
+            }
+            data-reveal
+            id="contact"
+            style={{ fontSize: `${Math.max(12, sizes.contact)}px` }}
+          >
             <div>
-              <p className="sectionTag">{copy.sections.contact}</p>
+              <p className="sectionTag">{t(config.contact.heading)}</p>
               <h2 style={{ fontSize: `${Math.max(18, sizes.contact + 14)}px` }}>
-                {config.contact.callToAction}
+                {t(config.contact.callToAction)}
               </h2>
             </div>
             <div className="contactDetails">
@@ -413,13 +586,13 @@ export function PortfolioView({ config }: PortfolioViewProps) {
               <div className="socialRow">
                 {config.socialLinks.map((link) => (
                   <a
-                    aria-label={link.label}
+                    aria-label={t(link.label)}
                     className="socialIconLink"
                     href={link.href}
                     key={link.label}
                     rel="noreferrer"
                     target="_blank"
-                    title={link.label}
+                    title={t(link.label)}
                   >
                     <SocialIcon label={link.label} />
                   </a>

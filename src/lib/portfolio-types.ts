@@ -1,5 +1,6 @@
 export type ThemeMode = "light" | "dark";
 export type FontPreset = "editorial" | "modern" | "classic";
+export type SectionFontPreset = FontPreset | "inherit";
 
 export type PortfolioConfig = {
   site: {
@@ -34,6 +35,26 @@ export type PortfolioConfig = {
       projects: number;
       contact: number;
     };
+    sectionFonts: {
+      hero: SectionFontPreset;
+      about: SectionFontPreset;
+      services: SectionFontPreset;
+      cursus: SectionFontPreset;
+      experience: SectionFontPreset;
+      projects: SectionFontPreset;
+      contact: SectionFontPreset;
+    };
+  };
+  ui: {
+    themeToggle: {
+      darkLabel: string;
+      lightLabel: string;
+    };
+    languageLabels: {
+      fr: string;
+      mg: string;
+      en: string;
+    };
   };
   hero: {
     badge: string;
@@ -47,15 +68,18 @@ export type PortfolioConfig = {
   about: {
     enabled: boolean;
     heading: string;
+    title: string;
     body: string;
   };
   services: {
     enabled: boolean;
     heading: string;
+    title: string;
     items: Array<{ title: string; description: string }>;
   };
   cursus: {
     enabled: boolean;
+    label: string;
     heading: string;
     items: Array<{
       period: string;
@@ -66,6 +90,7 @@ export type PortfolioConfig = {
   };
   experience: {
     enabled: boolean;
+    label: string;
     heading: string;
     items: Array<{
       period: string;
@@ -77,6 +102,8 @@ export type PortfolioConfig = {
   projects: {
     enabled: boolean;
     heading: string;
+    title: string;
+    openLabel: string;
     items: Array<{ name: string; summary: string; url: string }>;
   };
   contact: {

@@ -44,6 +44,26 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       projects: 17,
       contact: 18,
     },
+    sectionFonts: {
+      hero: "inherit",
+      about: "inherit",
+      services: "inherit",
+      cursus: "inherit",
+      experience: "inherit",
+      projects: "inherit",
+      contact: "inherit",
+    },
+  },
+  ui: {
+    themeToggle: {
+      darkLabel: "Mode sombre",
+      lightLabel: "Mode clair",
+    },
+    languageLabels: {
+      fr: "FR",
+      mg: "MG",
+      en: "EN",
+    },
   },
   hero: {
     badge: "Disponible pour missions freelance",
@@ -70,11 +90,13 @@ export const defaultPortfolioConfig: PortfolioConfig = {
   about: {
     enabled: true,
     heading: "A propos",
-    body: "Je construis des sites et interfaces qui donnent confiance des les premieres secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences simples a faire evoluer.",
+    title: "Une presence digitale qui reste simple a faire evoluer.",
+    body: "Je construis des sites et interfaces qui inspirent confiance en quelques secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences simples a faire evoluer.",
   },
   services: {
     enabled: true,
     heading: "Services",
+    title: "Un portfolio qui suit ton rythme.",
     items: [
       {
         title: "Direction visuelle",
@@ -95,6 +117,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
   },
   cursus: {
     enabled: true,
+    label: "Cursus",
     heading: "Cursus",
     items: [
       {
@@ -107,7 +130,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       {
         period: "2019 - 2020",
         diploma: "Formation UI/UX",
-        institution: "Programme intensif design digital",
+        institution: "Programme intensif de design digital",
         details:
           "Conception d'interfaces, prototypage et systemes visuels orientes experience utilisateur.",
       },
@@ -115,6 +138,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
   },
   experience: {
     enabled: true,
+    label: "Experiences",
     heading: "Experiences professionnelles",
     items: [
       {
@@ -126,7 +150,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       },
       {
         period: "2022 - 2024",
-        role: "Frontend Developer",
+        role: "Developpeur frontend",
         company: "Agence digitale locale",
         details:
           "Realisation d'interfaces React, optimisation responsive et maintenance continue.",
@@ -136,11 +160,13 @@ export const defaultPortfolioConfig: PortfolioConfig = {
   projects: {
     enabled: true,
     heading: "Projets",
+    title: "Selection recente",
+    openLabel: "Ouvrir",
     items: [
       {
         name: "Studio Horizon",
         summary:
-          "Landing page premium avec storytelling visuel et formulaire de conversion.",
+          "Page vitrine premium avec storytelling visuel et formulaire de conversion.",
         url: "https://example.com",
       },
       {
@@ -151,7 +177,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       {
         name: "Pulse Event",
         summary:
-          "Site evenementiel avec planning, speakers et edition rapide du contenu.",
+          "Site evenementiel avec planning, intervenants et edition rapide du contenu.",
         url: "https://example.com",
       },
     ],
@@ -191,6 +217,22 @@ function mergePortfolioConfig(
       fontSizes: {
         ...defaultPortfolioConfig.preferences.fontSizes,
         ...incoming?.preferences?.fontSizes,
+      },
+      sectionFonts: {
+        ...defaultPortfolioConfig.preferences.sectionFonts,
+        ...incoming?.preferences?.sectionFonts,
+      },
+    },
+    ui: {
+      ...defaultPortfolioConfig.ui,
+      ...incoming?.ui,
+      themeToggle: {
+        ...defaultPortfolioConfig.ui.themeToggle,
+        ...incoming?.ui?.themeToggle,
+      },
+      languageLabels: {
+        ...defaultPortfolioConfig.ui.languageLabels,
+        ...incoming?.ui?.languageLabels,
       },
     },
     hero: {
