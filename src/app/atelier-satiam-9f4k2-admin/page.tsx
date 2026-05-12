@@ -2,8 +2,8 @@ import { AdminEditor } from "@/components/admin-editor";
 import { getPortfolioConfig } from "@/lib/portfolio";
 
 export const metadata = {
-  title: "Admin | satiam",
-  description: "Edition du portfolio satiam",
+  title: "Admin | Daniella",
+  description: "Edition du portfolio Daniella",
 };
 
 export const dynamic = "force-dynamic";

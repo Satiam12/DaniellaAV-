@@ -1,4 +1,4 @@
-export const adminBasePath = "/atelier-satiam-9f4k2-admin";
+export const adminBasePath = "/atelier-daniella-9f4k2-admin";
 
 export const adminPageKeys = [
   "overview",

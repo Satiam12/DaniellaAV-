@@ -328,7 +328,7 @@ export function AdminEditor({ initialConfig, currentPage }: AdminEditorProps) {
     <div className="adminShell">
       <aside className="adminSidebar">
         <p className="sidebarKicker">Console de pilotage</p>
-        <h1>Studio satiam</h1>
+        <h1>Studio Daniella</h1>
         <p>Espace simple pour gerer les textes, la palette, le mode sombre et les polices.</p>
         <button className="buttonPrimaryAction" disabled={isPending} onClick={saveConfig} type="button">
           {isPending ? "Enregistrement..." : "Enregistrer"}

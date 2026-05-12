@@ -37,7 +37,7 @@ const classicHeadingFont = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: "satiam | Portfolio",
+  title: "Daniella | Portfolio",
   description: "Portfolio professionnel avec admin Next.js et deploiement Vercel",
 };
 

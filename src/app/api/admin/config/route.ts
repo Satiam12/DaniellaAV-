@@ -9,7 +9,7 @@ export async function PUT(request: Request) {
     const config = (await request.json()) as PortfolioConfig;
     const savedConfig = await savePortfolioConfig(config);
     revalidatePath("/");
-    revalidatePath("/atelier-satiam-9f4k2-admin");
+    revalidatePath("/atelier-daniella-9f4k2-admin");
 
     return NextResponse.json({ config: savedConfig });
   } catch (error) {

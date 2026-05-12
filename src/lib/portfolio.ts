@@ -13,8 +13,8 @@ const configPath = path.join(process.cwd(), "data", "portfolio-config.json");
 
 export const defaultPortfolioConfig: PortfolioConfig = {
   site: {
-    ownerName: "satiam",
-    navTitle: "satiam portfolio",
+    ownerName: "Daniella",
+    navTitle: "Daniella portfolio",
     location: "Antananarivo, Madagascar",
   },
   theme: {
@@ -156,7 +156,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
       {
         period: "2024 - Aujourd'hui",
         role: "Developpeur Next.js freelance",
-        company: "Satiam Studio",
+        company: "Daniella Studio",
         details:
           "Creation de portfolios, vitrines et panneaux d'administration pour independants et TPE.",
       },
@@ -197,7 +197,7 @@ export const defaultPortfolioConfig: PortfolioConfig = {
   contact: {
     enabled: true,
     heading: "Contact",
-    email: "contact@satiam.dev",
+    email: "contact@daniella.dev",
     phone: "+261 34 00 000 00",
     callToAction:
       "Parlons de votre prochaine vitrine, refonte ou identite digitale.",
