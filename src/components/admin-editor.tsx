@@ -25,9 +25,9 @@ type AdminEditorProps = {
 };
 
 const paletteSuggestions = [
+  { name: "Kamelia doux", theme: { primary: "#b15c3b", secondary: "#ead7c4", accent: "#2f6f63", background: "#f8f1ea", surface: "#fffaf5", text: "#261b17", muted: "#78665d", darkBackground: "#151312", darkSurface: "#211d1a", darkText: "#fbf2e9", darkMuted: "#c5b7aa" } },
   { name: "Terre chaude", theme: { primary: "#d05f32", secondary: "#f3b57d", accent: "#1d6c63", background: "#f7efe3", surface: "#fff8ef", text: "#24150f", muted: "#6b564c", darkBackground: "#101213", darkSurface: "#171d1f", darkText: "#f7efe3", darkMuted: "#bcab9e" } },
   { name: "Ocean atelier", theme: { primary: "#0f6c7a", secondary: "#b6e3ea", accent: "#f08a5d", background: "#edf8fa", surface: "#ffffff", text: "#14343a", muted: "#5c7c82", darkBackground: "#09181d", darkSurface: "#10242b", darkText: "#ecf7f8", darkMuted: "#91afb4" } },
-  { name: "Studio sable", theme: { primary: "#a44f2f", secondary: "#f1d3a3", accent: "#5f7c45", background: "#fbf3e6", surface: "#fffaf2", text: "#2e2017", muted: "#7b6659", darkBackground: "#161310", darkSurface: "#211b16", darkText: "#fff5e7", darkMuted: "#c4b5a1" } },
 ];
 
 const defaultSectionOrder: PortfolioSectionId[] = [
@@ -328,8 +328,8 @@ export function AdminEditor({ initialConfig, currentPage }: AdminEditorProps) {
     <div className="adminShell">
       <aside className="adminSidebar">
         <p className="sidebarKicker">Console de pilotage</p>
-        <h1>Studio Daniella</h1>
-        <p>Espace simple pour gerer les textes, la palette, le mode sombre et les polices.</p>
+        <h1>Daniella AV</h1>
+        <p>Espace calme pour piloter les textes, les offres, les couleurs et l&apos;ordre des sections.</p>
         <button className="buttonPrimaryAction" disabled={isPending} onClick={saveConfig} type="button">
           {isPending ? "Enregistrement..." : "Enregistrer"}
         </button>
@@ -359,8 +359,8 @@ export function AdminEditor({ initialConfig, currentPage }: AdminEditorProps) {
         <article className="adminHeroCard" id="admin-overview">
           <div>
             <p className="sectionLabel">Tableau de bord</p>
-            <h2>Edition legere, sans photos et plus facile a maintenir</h2>
-            <p className="adminHeroText">Le portfolio reste concentre sur le texte, le style, les couleurs et la typographie.</p>
+            <h2>Interface inspiree assistante virtuelle, claire et facile a maintenir</h2>
+            <p className="adminHeroText">Le site public garde une presentation editoriale, chaleureuse et orientee prise de rendez-vous.</p>
           </div>
           <div className="adminQuickGrid">
             <div className="quickCard"><span>Police active</span><strong>{config.preferences.fontPreset}</strong></div>

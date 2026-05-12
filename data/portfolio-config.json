@@ -1,21 +1,21 @@
 {
   "site": {
     "ownerName": "Daniella",
-    "navTitle": "Daniella portfolio",
+    "navTitle": "Daniella Assistante Virtuelle",
     "location": "Antananarivo, Madagascar"
   },
   "theme": {
-    "primary": "#d05f32",
-    "secondary": "#f3b57d",
-    "accent": "#1d6c63",
-    "background": "#f7efe3",
-    "surface": "#fff8ef",
-    "text": "#24150f",
-    "muted": "#6b564c",
-    "darkBackground": "#101213",
-    "darkSurface": "#171d1f",
-    "darkText": "#f7efe3",
-    "darkMuted": "#bcab9e"
+    "primary": "#b15c3b",
+    "secondary": "#ead7c4",
+    "accent": "#2f6f63",
+    "background": "#f8f1ea",
+    "surface": "#fffaf5",
+    "text": "#261b17",
+    "muted": "#78665d",
+    "darkBackground": "#151312",
+    "darkSurface": "#211d1a",
+    "darkText": "#fbf2e9",
+    "darkMuted": "#c5b7aa"
   },
   "preferences": {
     "defaultMode": "light",
@@ -50,31 +50,31 @@
     ]
   },
   "hero": {
-    "badge": "Disponible pour missions freelance",
-    "title": "Je transforme mes idees en experiences web nettes, rapides et memorables.",
-    "subtitle": "Designer developpeur freelance",
-    "description": "Portfolio Next.js simple a ajuster: textes, sections, couleurs, mode clair ou sombre et polices.",
+    "badge": "Disponible pour missions a distance",
+    "title": "Daniella, votre assistante virtuelle organisee et fiable.",
+    "subtitle": "Support administratif, organisation et suivi client",
+    "description": "Je vous aide a alleger votre quotidien professionnel, structurer vos priorites et garder une communication fluide avec vos clients.",
     "primaryButton": {
-      "label": "Demarrer un projet",
+      "label": "Prendre RDV",
       "href": "#contact",
       "enabled": true
     },
     "secondaryButton": {
-      "label": "Voir mes projets",
-      "href": "#projects",
+      "label": "Voir mes services",
+      "href": "#services",
       "enabled": true
     },
     "stats": [
       {
-        "label": "Projets livres",
-        "value": "18+"
+        "label": "Taches structurees",
+        "value": "120+"
       },
       {
-        "label": "Clients accompagnes",
-        "value": "11"
+        "label": "Missions accompagnees",
+        "value": "15+"
       },
       {
-        "label": "Temps de reponse",
+        "label": "Delai de reponse",
         "value": "24h"
       }
     ]
@@ -82,43 +82,43 @@
   "about": {
     "enabled": true,
     "heading": "A propos",
-    "body": "Je construis des sites et interfaces qui inspirent confiance en quelques secondes. Mon approche melange direction artistique, structure claire et outils modernes pour livrer des experiences simples a faire evoluer.",
-    "title": "Une presence digitale qui reste simple a faire evoluer."
+    "body": "Je vous accompagne dans les taches qui prennent du temps mais qui font tenir l'activite: organisation, suivi administratif, coordination, outils et priorites. Mon objectif est simple: rendre votre quotidien plus lisible, plus fluide et plus serein.",
+    "title": "Derriere une activite qui avance, il y a une organisation claire."
   },
   "services": {
     "enabled": true,
     "heading": "Services",
     "items": [
       {
-        "title": "Direction visuelle",
-        "description": "Identite, palettes, hierarchie typographique et direction UI coherente."
+        "title": "Support administratif",
+        "description": "Gestion de documents, suivi de facturation, classement, mise en forme et assistance quotidienne."
       },
       {
-        "title": "Developpement Next.js",
-        "description": "Interfaces rapides, panneaux de gestion, formulaires et deploiement Vercel."
+        "title": "Organisation et process",
+        "description": "Mise en place de tableaux de suivi, priorisation, routines et workflows adaptes a votre facon de travailler."
       },
       {
-        "title": "Autonomie client",
-        "description": "Outils simples pour changer le contenu, les sections et les visuels sans redeploiement manuel."
+        "title": "Relation client",
+        "description": "Tri des messages, preparation de reponses, suivi des demandes et coordination des rendez-vous."
       }
     ],
-    "title": "Un portfolio qui suit ton rythme."
+    "title": "Des services pour vous faire gagner du temps."
   },
   "cursus": {
     "enabled": true,
-    "heading": "Cursus",
+    "heading": "Formation et methode",
     "items": [
       {
         "period": "2020 - 2023",
-        "diploma": "Licence en informatique",
-        "institution": "Universite d'Antananarivo",
-        "details": "Parcours developpement web, architecture logicielle et gestion de projet numerique."
+        "diploma": "Gestion administrative et organisation",
+        "institution": "Formation professionnelle",
+        "details": "Bases solides en gestion, communication, suivi de dossiers et coordination operationnelle."
       },
       {
         "period": "2019 - 2020",
-        "diploma": "Formation UI/UX",
-        "institution": "Programme intensif de design digital",
-        "details": "Conception d'interfaces, prototypage et systemes visuels orientes experience utilisateur."
+        "diploma": "Outils digitaux et automatisation",
+        "institution": "Apprentissage continu",
+        "details": "Notion, Trello, suites bureautiques, formulaires, tableaux de bord et methodes de suivi."
       }
     ],
     "label": "Cursus"
@@ -129,48 +129,48 @@
     "items": [
       {
         "period": "2024 - Aujourd'hui",
-        "role": "Developpeur Next.js freelance",
-        "company": "Daniella Studio",
-        "details": "Creation de portfolios, vitrines et panneaux d'administration pour independants et TPE."
+        "role": "Assistante virtuelle independante",
+        "company": "Daniella AV",
+        "details": "Accompagnement d'independants et petites equipes sur l'administratif, l'organisation et la relation client."
       },
       {
         "period": "2022 - 2024",
-        "role": "Developpeur frontend",
-        "company": "Agence digitale locale",
-        "details": "Realisation d'interfaces React, optimisation responsive et maintenance continue."
+        "role": "Assistante administrative",
+        "company": "Entreprises locales",
+        "details": "Suivi de dossiers, coordination, accueil, preparation de documents et communication interne."
       }
     ],
     "label": "Experiences"
   },
   "projects": {
     "enabled": true,
-    "heading": "Projets",
+    "heading": "Offres",
     "items": [
       {
-        "name": "Studio Horizon",
-        "summary": "Page vitrine premium avec storytelling visuel et formulaire de conversion.",
-        "url": "https://example.com"
+        "name": "Decouverte",
+        "summary": "Un accompagnement court pour clarifier vos besoins, remettre de l'ordre et lancer les premieres actions.",
+        "url": "#contact"
       },
       {
-        "name": "Atelier Mono",
-        "summary": "Portfolio minimaliste avec zone d'edition simple et rapide.",
-        "url": "https://example.com"
+        "name": "Essentielle",
+        "summary": "Un soutien regulier pour les taches administratives, la coordination et le suivi des priorites.",
+        "url": "#contact"
       },
       {
-        "name": "Pulse Event",
-        "summary": "Site evenementiel avec planning, intervenants et edition rapide du contenu.",
-        "url": "https://example.com"
+        "name": "Sur-mesure",
+        "summary": "Une formule flexible selon votre volume, vos outils et le rythme reel de votre activite.",
+        "url": "#contact"
       }
     ],
-    "title": "Selection recente",
-    "openLabel": "Ouvrir"
+    "title": "Des formules simples, sans lourdeur.",
+    "openLabel": "Demander"
   },
   "contact": {
     "enabled": true,
     "heading": "Contact",
-    "email": "contact@daniella.dev",
+    "email": "contact@daniella-av.com",
     "phone": "+261 34 00 000 00",
-    "callToAction": "Parlons de votre prochaine vitrine, refonte ou identite digitale."
+    "callToAction": "Parlons de ce que vous pouvez deleguer des maintenant pour retrouver du temps."
   },
   "socialLinks": [
     {

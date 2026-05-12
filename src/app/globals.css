@@ -1,32 +1,27 @@
 :root {
-  --color-primary: #d05f32;
-  --color-secondary: #f3b57d;
-  --color-accent: #1d6c63;
-  --color-background: #f7efe3;
-  --color-surface: #fff8ef;
-  --color-text: #24150f;
-  --color-muted: #6b564c;
-  --color-dark-background: #101213;
-  --color-dark-surface: #171d1f;
-  --color-dark-text: #f7efe3;
-  --color-dark-muted: #bcab9e;
-  --page-background:
-    linear-gradient(180deg, rgba(243, 181, 125, 0.12), transparent 25%),
-    radial-gradient(circle at top left, rgba(208, 95, 50, 0.18), transparent 32%),
-    var(--color-background);
-  --surface-background: rgba(255, 248, 239, 0.82);
-  --surface-border: rgba(36, 21, 15, 0.08);
-  --shadow-soft: 0 24px 70px rgba(36, 21, 15, 0.12);
+  --color-primary: #b15c3b;
+  --color-secondary: #ead7c4;
+  --color-accent: #2f6f63;
+  --color-background: #f8f1ea;
+  --color-surface: #fffaf5;
+  --color-text: #261b17;
+  --color-muted: #78665d;
+  --color-dark-background: #151312;
+  --color-dark-surface: #211d1a;
+  --color-dark-text: #fbf2e9;
+  --color-dark-muted: #c5b7aa;
+  --page-background: var(--color-background);
+  --surface-background: rgba(255, 250, 245, 0.9);
+  --surface-border: rgba(38, 27, 23, 0.11);
+  --shadow-soft: 0 18px 44px rgba(38, 27, 23, 0.08);
+  --container-width: 1180px;
 }
 
 html[data-theme="dark"] {
-  --page-background:
-    linear-gradient(180deg, rgba(243, 181, 125, 0.06), transparent 20%),
-    radial-gradient(circle at top left, rgba(29, 108, 99, 0.22), transparent 30%),
-    var(--color-dark-background);
+  --page-background: var(--color-dark-background);
   --surface-background: rgba(23, 29, 31, 0.86);
   --surface-border: rgba(247, 239, 227, 0.09);
-  --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 20px 54px rgba(0, 0, 0, 0.24);
 }
 
 html {
@@ -49,6 +44,18 @@ body {
   transition:
     background-color 180ms ease,
     color 180ms ease;
+}
+
+body::before {
+  background-image:
+    linear-gradient(rgba(38, 27, 23, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(38, 27, 23, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
 }
 
 html[data-theme="dark"] body {
@@ -93,7 +100,7 @@ img {
 
 .portfolioShell {
   min-height: 100vh;
-  padding: 24px;
+  padding: 18px 24px 64px;
 }
 
 .topbar,
@@ -110,14 +117,14 @@ img {
 
 .topbar {
   align-items: center;
-  border-radius: 999px;
+  border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: space-between;
   margin: 0 auto 24px;
-  max-width: 1240px;
-  padding: 14px 18px;
+  max-width: var(--container-width);
+  padding: 12px 14px;
   position: sticky;
   top: 16px;
   z-index: 20;
@@ -155,15 +162,15 @@ html[data-theme="dark"] .statusText {
 
 .brandMark {
   align-items: center;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  border-radius: 50%;
-  color: #fffaf3;
+  background: var(--color-text);
+  border-radius: 4px;
+  color: var(--color-surface);
   display: inline-flex;
   font-size: 0.85rem;
   font-weight: 800;
   height: 44px;
   justify-content: center;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
   width: 44px;
 }
@@ -183,9 +190,9 @@ html[data-theme="dark"] .statusText {
 }
 
 .languageToggle {
-  background: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.48);
   border: 1px solid var(--surface-border);
-  border-radius: 999px;
+  border-radius: 8px;
   display: flex;
   gap: 6px;
   padding: 4px;
@@ -205,7 +212,7 @@ html[data-theme="dark"] .statusText {
 .languageButton {
   background: transparent;
   border: none;
-  border-radius: 999px;
+  border-radius: 6px;
   color: inherit;
   cursor: pointer;
   min-width: 48px;
@@ -213,7 +220,7 @@ html[data-theme="dark"] .statusText {
 }
 
 .languageButton.active {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   color: #fffaf3;
 }
 
@@ -221,7 +228,7 @@ html[data-theme="dark"] .statusText {
   align-items: center;
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid var(--surface-border);
-  border-radius: 999px;
+  border-radius: 8px;
   display: inline-flex;
   height: 46px;
   justify-content: center;
@@ -252,7 +259,7 @@ html[data-theme="dark"] .statusText {
 .buttonPrimary,
 .buttonGhost,
 .projectCard a {
-  border-radius: 999px;
+  border-radius: 8px;
   transition:
     transform 160ms ease,
     background-color 160ms ease,
@@ -265,7 +272,7 @@ html[data-theme="dark"] .statusText {
 }
 
 .nav a.active {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   color: #fffaf3;
 }
 
@@ -288,20 +295,20 @@ html[data-theme="dark"] .statusText {
 
 .heroPanel,
 .contentSection {
-  border-radius: 36px;
+  border-radius: 8px;
   font-family: var(--active-font-body, var(--font-body)), sans-serif;
-  margin: 0 auto 24px;
-  max-width: 1240px;
+  margin: 0 auto 18px;
+  max-width: var(--container-width);
   overflow: hidden;
 }
 
 .heroPanel {
-  align-items: center;
+  align-items: stretch;
   display: grid;
-  gap: 32px;
+  gap: 28px;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  min-height: clamp(520px, 72vh, 820px);
-  padding: 42px;
+  min-height: clamp(560px, 78vh, 820px);
+  padding: clamp(24px, 5vw, 64px);
 }
 
 .heroPanelTextOnly {
@@ -314,10 +321,12 @@ html[data-theme="dark"] .statusText {
 
 .heroPanelWithPhoto {
   align-items: stretch;
-  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.78fr);
 }
 
 .heroCopy {
+  align-content: center;
+  display: grid;
   position: relative;
   z-index: 1;
 }
@@ -330,7 +339,7 @@ html[data-theme="dark"] .statusText {
   display: inline-block;
   font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -339,10 +348,10 @@ html[data-theme="dark"] .statusText {
 }
 
 .heroCopy h1 {
-  font-size: clamp(3.5rem, 8vw, 6.3rem);
-  line-height: 0.92;
+  font-size: clamp(3.2rem, 7vw, 6rem);
+  line-height: 0.95;
   margin: 0;
-  max-width: 10ch;
+  max-width: 12ch;
 }
 
 .lead,
@@ -360,7 +369,7 @@ html[data-theme="dark"] .statusText {
   font-size: 1.05rem;
   line-height: 1.8;
   margin: 20px 0 0;
-  max-width: 60ch;
+  max-width: 52ch;
 }
 
 .heroActions,
@@ -385,40 +394,33 @@ html[data-theme="dark"] .statusText {
 
 .heroPhotoCard {
   align-items: end;
-  background: linear-gradient(
-    170deg,
-    rgba(255, 255, 255, 0.42),
-    rgba(255, 255, 255, 0.18)
-  );
+  background: var(--color-secondary);
   border: 1px solid var(--surface-border);
-  border-radius: 32px;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   min-height: 100%;
   overflow: hidden;
-  padding: 14px;
+  padding: 10px;
 }
 
 html[data-theme="dark"] .heroPhotoCard {
-  background: linear-gradient(
-    170deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.02)
-  );
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .heroPhoto {
-  border-radius: 24px;
-  height: auto;
-  max-height: 72vh;
+  border-radius: 6px;
+  height: 100%;
+  max-height: none;
   object-fit: cover;
+  object-position: center;
   width: 100%;
 }
 
 .heroTextBlock {
   background: rgba(255, 255, 255, 0.24);
   border: 1px solid var(--surface-border);
-  border-radius: 30px;
+  border-radius: 8px;
   display: grid;
   gap: 14px;
   padding: 26px;
@@ -433,7 +435,7 @@ html[data-theme="dark"] .heroPhotoCard {
 .inlineItemEditor {
   background: rgba(255, 255, 255, 0.32);
   border: 1px solid var(--surface-border);
-  border-radius: 22px;
+  border-radius: 8px;
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -452,7 +454,7 @@ html[data-theme="dark"] .inlineItemEditor {
 .buttonPrimary,
 .adminSidebar button,
 .projectCard a {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   border: none;
   color: #fffaf3;
   padding: 14px 22px;
@@ -465,7 +467,7 @@ html[data-theme="dark"] .inlineItemEditor {
 .buttonSecondary,
 .buttonDanger {
   border: 1px solid var(--surface-border);
-  border-radius: 16px;
+  border-radius: 8px;
   cursor: pointer;
   min-height: 46px;
   padding: 12px 16px;
@@ -497,9 +499,9 @@ html[data-theme="dark"] .buttonDanger {
 .statCard,
 .infoCard,
 .projectCard {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.42);
   border: 1px solid var(--surface-border);
-  border-radius: 26px;
+  border-radius: 8px;
   padding: 20px;
 }
 
@@ -516,7 +518,7 @@ html[data-theme="dark"] .projectCard {
 }
 
 .contentSection {
-  padding: 32px;
+  padding: clamp(28px, 5vw, 72px);
 }
 
 .focusSection {
@@ -527,7 +529,7 @@ html[data-theme="dark"] .projectCard {
 
 .aboutCard {
   background:
-    linear-gradient(135deg, rgba(208, 95, 50, 0.08), transparent 42%),
+    linear-gradient(90deg, rgba(177, 92, 59, 0.08), transparent 58%),
     var(--surface-background);
 }
 
@@ -542,8 +544,8 @@ html[data-theme="dark"] .projectCard {
 .contentSection h2,
 .adminCard h2,
 .adminSidebar h1 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 0.98;
+  font-size: clamp(2rem, 3.6vw, 3.5rem);
+  line-height: 1;
   margin: 12px 0 0;
 }
 
@@ -593,16 +595,16 @@ html[data-theme="dark"] .projectCard {
   align-items: start;
   display: grid;
   gap: 24px;
-  grid-template-columns: 340px minmax(0, 1fr);
+  grid-template-columns: 320px minmax(0, 1fr);
   min-height: 100vh;
   padding: 24px;
 }
 
 .adminSidebar {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 50%),
+    linear-gradient(180deg, rgba(177, 92, 59, 0.08), transparent 48%),
     var(--surface-background);
-  border-radius: 30px;
+  border-radius: 8px;
   display: grid;
   align-content: start;
   gap: 16px;
@@ -627,7 +629,7 @@ html[data-theme="dark"] .projectCard {
   backdrop-filter: blur(18px);
   background: var(--surface-background);
   border: 1px solid var(--surface-border);
-  border-radius: 999px;
+  border-radius: 8px;
   box-shadow: var(--shadow-soft);
   display: flex;
   flex-wrap: wrap;
@@ -640,7 +642,7 @@ html[data-theme="dark"] .projectCard {
 
 .adminTopbar a {
   border: 1px solid var(--surface-border);
-  border-radius: 999px;
+  border-radius: 8px;
   color: inherit;
   font-weight: 600;
   padding: 10px 14px;
@@ -655,13 +657,13 @@ html[data-theme="dark"] .projectCard {
 }
 
 .adminTopbar a.active {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   color: #fffaf3;
 }
 
 .adminHeroCard,
 .adminCard {
-  border-radius: 30px;
+  border-radius: 8px;
   padding: 28px;
 }
 
@@ -698,7 +700,7 @@ html[data-theme="dark"] .projectCard {
 .paletteCard {
   background: rgba(255, 255, 255, 0.28);
   border: 1px solid var(--surface-border);
-  border-radius: 22px;
+  border-radius: 8px;
 }
 
 .miniStat,
@@ -728,7 +730,7 @@ html[data-theme="dark"] .paletteCard {
 .statusPill {
   background: rgba(29, 108, 99, 0.12);
   border: 1px solid rgba(29, 108, 99, 0.18);
-  border-radius: 999px;
+  border-radius: 8px;
   color: var(--color-accent);
   display: inline-flex;
   padding: 10px 14px;
@@ -736,9 +738,9 @@ html[data-theme="dark"] .paletteCard {
 }
 
 .buttonPrimaryAction {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   border: none;
-  border-radius: 18px;
+  border-radius: 8px;
   color: #fffaf3;
   cursor: pointer;
   min-height: 52px;
@@ -746,9 +748,9 @@ html[data-theme="dark"] .paletteCard {
 }
 
 .floatingSaveButton {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: var(--color-text);
   border: none;
-  border-radius: 999px;
+  border-radius: 8px;
   bottom: 20px;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
   color: #fffaf3;
@@ -820,7 +822,7 @@ html[data-theme="dark"] .paletteCard {
 }
 
 .palettePreview span {
-  border-radius: 999px;
+  border-radius: 8px;
   display: block;
   height: 34px;
 }
@@ -836,7 +838,7 @@ textarea,
 select {
   background: rgba(255, 255, 255, 0.66);
   border: 1px solid var(--surface-border);
-  border-radius: 18px;
+  border-radius: 8px;
   color: inherit;
   min-height: 48px;
   padding: 12px 14px;
@@ -923,7 +925,7 @@ input[type="color"] {
   .contentSection,
   .adminCard,
   .adminSidebar {
-    border-radius: 24px;
+    border-radius: 8px;
   }
 
   .formGrid,
@@ -937,7 +939,7 @@ input[type="color"] {
   }
 
   .adminTopbar {
-    border-radius: 24px;
+    border-radius: 8px;
     overflow-x: auto;
     white-space: nowrap;
   }
@@ -1031,7 +1033,7 @@ input[type="color"] {
   display: none;
   background: var(--surface-background);
   border: 1px solid var(--surface-border);
-  border-radius: 50%;
+  border-radius: 8px;
   color: var(--color-text);
   cursor: pointer;
   height: 44px;

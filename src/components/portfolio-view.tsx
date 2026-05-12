@@ -504,7 +504,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
               className="heroPhoto"
               height={1024}
               priority
-              src="/hero/satiam.jpeg"
+              src="/uploads/satiam-hero.svg"
               width={576}
             />
           </div>
