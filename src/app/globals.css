@@ -1025,3 +1025,130 @@ input[type="color"] {
     padding: 20px;
   }
 }
+
+/* Mobile menu toggle button */
+.mobileMenuToggle {
+  display: none;
+  background: var(--surface-background);
+  border: 1px solid var(--surface-border);
+  border-radius: 50%;
+  color: var(--color-text);
+  cursor: pointer;
+  height: 44px;
+  width: 44px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 25;
+  transition: all 200ms ease;
+}
+
+.mobileMenuToggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-theme="dark"] .mobileMenuToggle {
+  color: var(--color-dark-text);
+}
+
+/* Hide topbar on mobile by default */
+@media (max-width: 760px) {
+  .mobileMenuToggle {
+    display: flex;
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    border-radius: 0;
+    margin: 0;
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 300ms ease;
+    z-index: 24;
+  }
+
+  .topbar.visible {
+    max-height: 100vh;
+    opacity: 1;
+    overflow-y: auto;
+  }
+
+  .topbar.hidden {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .topbar .brand {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .topbar .nav {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .topbar .nav a {
+    padding: 12px;
+    display: block;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.04);
+    transition: background 150ms ease;
+  }
+
+  html[data-theme="dark"] .topbar .nav a {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .topbar .nav a:hover,
+  .topbar .nav a.active {
+    background: var(--color-primary);
+    color: #fffaf3;
+  }
+
+  .topbar .toolbarGroup {
+    width: 100%;
+    flex-direction: column;
+    margin-left: 0;
+    gap: 12px;
+  }
+
+  .topbar .languageToggle,
+  .topbar .themeToggle {
+    width: 100%;
+  }
+
+  .topbar .languageToggle button {
+    flex: 1;
+  }
+}
+
+/* Show toggle button only on mobile */
+@media (min-width: 761px) {
+  .mobileMenuToggle {
+    display: none !important;
+  }
+
+  .topbar {
+    max-height: none !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+  }
+}

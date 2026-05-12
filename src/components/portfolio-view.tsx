@@ -79,6 +79,7 @@ export function PortfolioView({ config }: PortfolioViewProps) {
     return stored === "fr" || stored === "mg" || stored === "en" ? stored : "fr";
   });
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const themeStyles = getThemeStyles(config) as CSSProperties;
   const t = (text: string) => translateText(config, language, text);
   const sizes = config.preferences.fontSizes;
@@ -401,7 +402,22 @@ export function PortfolioView({ config }: PortfolioViewProps) {
       data-font-preset={config.preferences.fontPreset}
       style={themeStyles}
     >
-      <header className="topbar">
+      <button
+        className="mobileMenuToggle"
+        onClick={() => setIsHeaderVisible(!isHeaderVisible)}
+        type="button"
+        aria-label={isHeaderVisible ? "Fermer menu" : "Ouvrir menu"}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          {isHeaderVisible ? (
+            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+          ) : (
+            <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
+          )}
+        </svg>
+      </button>
+
+      <header className={`topbar ${isHeaderVisible ? "visible" : "hidden"}`}>
         <a className="brand" href="#home">
           <span className="brandMark">{config.site.ownerName.slice(0, 2)}</span>
           <span>
